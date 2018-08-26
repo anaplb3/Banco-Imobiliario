@@ -3,7 +3,6 @@ package jogo;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import posicoes.Companhia;
 import posicoes.Imposto;
 import posicoes.Lucros;
 import posicoes.ParadaLivre;
@@ -33,7 +32,7 @@ public class Jogo {
 	}
 
 	// Fazendo jogada
-	public void comecandoJogo() {
+	public void fazendoJogada() {
 
 		System.out.println("O jogo vai começar. Divirta-se!");
 		int contador = 0;
@@ -55,7 +54,7 @@ public class Jogo {
 			if (escolha.equals("sair") || escolha.equals("Sair")) {
 				System.out.print("Tem certeza disso? (sim/nao) ");
 				String certeza = leitor.nextLine();
-				if(certeza.equals("sim")) {
+				if (certeza.equals("sim")) {
 					leitor.close();
 					break;
 				} else {
@@ -67,15 +66,15 @@ public class Jogo {
 			else if (escolha.equals("jogar") || escolha.equals("Jogar")) {
 				dado1 = d1.getDado();
 				dado2 = d2.getDado();
-				Posicao p;
+				Posicao posicao;
 
-				//Tratando o erro quando o jogador ultrapassa os limites do array
+				// Tratando o erro quando o jogador ultrapassa os limites do array
 				try {
-					p = tabuleiro.get(dado1 + dado2 + jogadores.get(contador).getPosicao());
+					posicao = tabuleiro.get(dado1 + dado2 + jogadores.get(contador).getPosicao());
 				} catch (IndexOutOfBoundsException erro) {
 					jaSetouPosicaoAntes = true;
 					int faltaAndar = (jogadorAtual.getPosicao() + dado1 + dado2) - 40;
-					p = tabuleiro.get(faltaAndar);
+					posicao = tabuleiro.get(faltaAndar);
 					jogadorAtual.setPosicao(faltaAndar);
 				}
 
@@ -83,93 +82,46 @@ public class Jogo {
 
 				// Caso seja prisão ou sorte ou revés, que ainda não está implementado
 				// completamente
-				if (p instanceof Prisao || p instanceof SorteOuReves) {
-					p.getNomeDaPosicao();
+				if (posicao instanceof Prisao || posicao instanceof SorteOuReves) {
+					posicao.getNomeDaPosicao();
 
 				}
 
 				// Caso caia no imposto de renda ou lucros e dividendos
-				else if (p instanceof Imposto) {
+				else if (posicao instanceof Imposto) {
 					System.out.println("Você caiu em Lucros e Dividendos. Ganhou 200!");
-					p.alterandoSaldoDoJogador(jogadorAtual);
-				} else if(p instanceof Lucros) {
+					posicao.alterandoSaldoDoJogador(jogadorAtual);
+				} else if (posicao instanceof Lucros) {
 					System.out.println("Você caiu no Imposto de Renda! Pague 200.");
-					p.alterandoSaldoDoJogador(jogadorAtual);
+					posicao.alterandoSaldoDoJogador(jogadorAtual);
 				}
 
-				// Caso caia em uma Companhia
-				else if (p instanceof Companhia) {
-					p.getNomeDaPosicao();
-					Companhia companhia = (Companhia) p;
-					
-					System.out.println("Preço: "+companhia.getPreco());
-
-					if (companhia.isStatus() == false) {
-						int multiplicadorASePagar = (dado1 + dado2) * companhia.getMultiplicador();
-
-						jogadorAtual.setDinheiro(jogadorAtual.getDinheiro() - multiplicadorASePagar);
-						System.out.println(
-								"Pagou R$"+multiplicadorASePagar+" de multiplicador. Dinheiro do jogador: " + jogadorAtual.getDinheiro() + "\n");
-					}
-					// Caso não tenha sido comprada, pergunta ao jogador se quer comprar
-					else {
-						System.out.print("Você quer comprar essa companhia? (sim/nao) ");
-						String comprar = leitor.nextLine();
-
-						if (comprar.equals("sim") || comprar.equals("Sim")) {
-							jogadorAtual.setDinheiro(jogadorAtual.getDinheiro() - companhia.getPreco());
-							jogadorAtual.adicionandoPropriedade(companhia);
-							System.out.println(
-									"Comprou propriedade. Dinheiro do jogador: " + jogadorAtual.getDinheiro() + "\n");
-							companhia.setStatus(false);
-						} else {
-							System.out.println("Você não comprou esta propriedade.");
-						}
-
-					}
-				}
-
-				// Caso caia em uma propriedade
-				else if (p instanceof Propriedade) {
-					Propriedade propriedade = (Propriedade) p;
-					p.getNomeDaPosicao();
-
-					// Caso a propriedade já esteja comprada, o jogador paga o aluguel
-					if (propriedade.isStatus() == false) {
-
-						jogadorAtual.setDinheiro(jogadorAtual.getDinheiro() - propriedade.getAluguel());
-						System.out.println("Pagou R$"+propriedade.getAluguel()+" de aluguel. Dinheiro do jogador: " + jogadorAtual.getDinheiro() + "\n");
-					}
-
-					// Caso não tenha sido comprada, pergunta ao jogador se quer comprar
-					else {
-						System.out.print("Você quer comprar essa propriedade? (sim/nao) ");
-						String comprar = leitor.nextLine();
-
-						if (comprar.equals("sim") || comprar.equals("Sim")) {
-							jogadorAtual.setDinheiro(jogadorAtual.getDinheiro() - propriedade.getPreco());
-							jogadorAtual.adicionandoPropriedade(propriedade);
-							System.out.println(
-									"Comprou propriedade. Dinheiro do jogador: " + jogadorAtual.getDinheiro() + "\n");
-							propriedade.setStatus(false);
-						} else {
-							System.out.println("Você não comprou esta propriedade.");
-						}
-
-					}
-
-				} else if(p instanceof ParadaLivre) {
+				// Caso caia em uma parada livre
+				else if (posicao instanceof ParadaLivre) {
 					System.out.println("Você está na parada livre!");
-				} else {
+				} 
+				
+				//Caso esteja no ponto de partida
+				else if (posicao == null) {
 					System.out.println("Você está no ponto de partida!");
+				} 
+				
+				//Caso seja propriedade ou companhia
+				else {
+					if (posicao.isStatus() == false) {
+						pagandoAluguelOuMultiplicador(jogadorAtual, posicao, dado1, dado2);
+					} else {
+						System.out.print("Você deseja comprar? (sim/nao) ");
+						String comprar = leitor.nextLine();
+						escolhaDeCompra(comprar, jogadorAtual, posicao);
+					}
 				}
 
 				// Setando posição do jogador depois que faz a jogada
-				if(jaSetouPosicaoAntes == false) {
+				if (jaSetouPosicaoAntes == false) {
 					int posicaoAtual = jogadorAtual.getPosicao();
 					jogadorAtual.setPosicao(posicaoAtual + dado1 + dado2);
 				}
-				
 
 			}
 
@@ -194,6 +146,36 @@ public class Jogo {
 				contador += 1;
 			}
 
+		}
+	}
+
+	public void pagandoAluguelOuMultiplicador(Jogador jogadorAtual, Posicao p, int dado1, int dado2) {
+	
+		if (p instanceof Propriedade) {
+
+			jogadorAtual.setDinheiro(jogadorAtual.getDinheiro() - p.getAluguel());
+			System.out.println("Pagou R$" + p.getAluguel() + " de aluguel. Dinheiro do jogador: "
+					+ jogadorAtual.getDinheiro() + "\n");
+		} 
+		
+		// Aqui a posicao é uma Companhia
+		else {
+			int multiplicadorASePagar = (dado1 + dado2) * p.getMultiplicador();
+
+			jogadorAtual.setDinheiro(jogadorAtual.getDinheiro() - multiplicadorASePagar);
+			System.out.println("Pagou R$" + multiplicadorASePagar + " de multiplicador. Dinheiro do jogador: "
+					+ jogadorAtual.getDinheiro() + "\n");
+		}
+	}
+
+	public void escolhaDeCompra(String comprar, Jogador jogadorAtual, Posicao posicao) {
+		if (comprar.equals("sim") || comprar.equals("Sim")) {
+			jogadorAtual.setDinheiro(jogadorAtual.getDinheiro() - posicao.getPreco());
+			jogadorAtual.adicionandoPropriedade(posicao);
+			System.out.println("Comprou propriedade. Dinheiro do jogador: " + jogadorAtual.getDinheiro() + "\n");
+			posicao.setStatus(false);
+		} else {
+			System.out.println("Você não comprou esta propriedade.");
 		}
 	}
 
@@ -232,40 +214,37 @@ public class Jogo {
 	public boolean validaQtdDeJogadores() {
 		try {
 			this.qtdJogadores = Integer.parseInt(leitor.nextLine());
-			return true;
 
 		} catch (NumberFormatException erro) {
-			System.out.println("Número inválido. Tente de novo!");
+			System.out.println("Número inválido. Tente de novo!\n");
 			return false;
 		}
-	
+		
+		
+		if (this.qtdJogadores < 2 || this.qtdJogadores > 8) {
+				System.out.println("Número de jogadores inválido!\n");
+				return false;
+			} else {
+				return true;
+			}
+		
+
 	}
-	
+
 	public void carregandoJogadores() {
 		ArrayList<String> lista_de_cores = carregandoCores();
-		boolean numeroJogadores = false;
 		boolean boolJogadores = false;
-		
-		while(boolJogadores == false) {
-			
+
+		while (boolJogadores == false) {
+
 			System.out.print("Quantos jogadores irão jogar? ");
 			boolJogadores = validaQtdDeJogadores();
-		}
-		
-		while (numeroJogadores == false) {
-
-			if (this.qtdJogadores < 2 || this.qtdJogadores > 8) {
-				System.out.println("Número de jogadores inválido!");
-
-			} else {
-				numeroJogadores = true;
-			}
 		}
 
 		// Pegando informações dos jogadores
 
 		for (int i = 0; i < this.qtdJogadores; i++) {
-			System.out.print("Qual seu nome? ");
+			System.out.print("\nQual seu nome? ");
 			String nome = leitor.nextLine();
 
 			System.out.println("[preto][branco][vermelho][verde][azul][amarelo][laranja][rosa]");
