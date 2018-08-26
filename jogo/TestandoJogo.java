@@ -8,6 +8,6 @@ public class TestandoJogo {
 
 		jogo.carregandoJogadores();
 
-		jogo.comecandoJogo();
+		jogo.fazendoJogada();
 	}
 }
