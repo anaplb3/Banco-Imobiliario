@@ -3,7 +3,9 @@ package tabuleiro;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import posicoes.Companhia;
 import posicoes.Posicao;
+import posicoes.Propriedade;
 
 public class Jogador {
 	private String nome;
@@ -73,7 +75,15 @@ public class Jogador {
 		if (this.propriedades.size() > 0) {
 			System.out.println("Essas são suas propriedades: ");
 			for (Posicao prop : this.propriedades) {
-				System.out.println(prop.getNome());
+				if(prop instanceof Propriedade) {
+					Propriedade p = (Propriedade) prop;
+					System.out.println(p.getNome()+", da cor "+p.getCor()+" com aluguel de R$"+p.getAluguel());
+				} else {
+					Companhia c = (Companhia) prop;
+					System.out.println(c.getNome()+", com multiplicador de "+c.getMultiplicador());
+				}
+				
+				
 			}
 			System.out.println("\n");
 
