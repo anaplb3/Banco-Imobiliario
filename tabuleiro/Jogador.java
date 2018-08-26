@@ -1,7 +1,6 @@
 package tabuleiro;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import posicoes.Companhia;
 import posicoes.Posicao;
@@ -58,12 +57,12 @@ public class Jogador {
 		this.cor = cor;
 	}
 
-	public void status(LinkedList<Posicao> tabuleiro) {
+	public void status(ArrayList<Posicao> tabuleiro) {
 		Posicao lugar = tabuleiro.get(this.posicao);
 
 		if (lugar == null) {
 			System.out.println(this.nome + " - " + this.cor);
-			System.out.println("Você está na casa " + this.posicao + ", em uma posição nula.");
+			System.out.println("Você está na casa " + this.posicao + ", no ponto de partida.");
 			System.out.println("Você possui R$" + this.dinheiro);
 
 		} else {
