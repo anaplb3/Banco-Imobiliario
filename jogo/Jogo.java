@@ -1,12 +1,12 @@
 package jogo;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Scanner;
 
 import posicoes.Companhia;
 import posicoes.Imposto;
 import posicoes.Lucros;
+import posicoes.ParadaLivre;
 import posicoes.Posicao;
 import posicoes.Prisao;
 import posicoes.SorteOuReves;
@@ -19,7 +19,7 @@ public class Jogo {
 	Scanner leitor;
 	Tabuleiro tab;
 	ArrayList<Jogador> jogadores;
-	LinkedList<Posicao> tabuleiro;
+	ArrayList<Posicao> tabuleiro;
 	Dado d1, d2;
 	int qtdJogadores;
 
@@ -53,7 +53,7 @@ public class Jogo {
 
 			// Caso o jogador queira sair
 			if (escolha.equals("sair") || escolha.equals("Sair")) {
-				System.out.print("Tem certeza disso? (sim/nao)");
+				System.out.print("Tem certeza disso? (sim/nao) ");
 				String certeza = leitor.nextLine();
 				if(certeza.equals("sim")) {
 					leitor.close();
@@ -158,6 +158,10 @@ public class Jogo {
 
 					}
 
+				} else if(p instanceof ParadaLivre) {
+					System.out.println("Você está na parada livre!");
+				} else {
+					System.out.println("Você está no ponto de partida!");
 				}
 
 				// Setando posição do jogador depois que faz a jogada
