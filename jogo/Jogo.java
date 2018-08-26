@@ -21,6 +21,7 @@ public class Jogo {
 	ArrayList<Jogador> jogadores;
 	LinkedList<Posicao> tabuleiro;
 	Dado d1, d2;
+	int qtdJogadores;
 
 	public Jogo() {
 		this.leitor = new Scanner(System.in);
@@ -33,8 +34,6 @@ public class Jogo {
 
 	// Fazendo jogada
 	public void comecandoJogo() {
-		
-		tab.checandoNomesEPosicao();
 
 		System.out.println("O jogo vai começar. Divirta-se!");
 		int contador = 0;
@@ -45,6 +44,7 @@ public class Jogo {
 			Jogador jogadorAtual = jogadores.get(contador);
 			boolean jaSetouPosicaoAntes = false;
 
+			// Mostrando situação do jogador
 			System.out.println("\nVez de " + jogadorAtual.getNome() + "(" + jogadorAtual.getCor() + ")"
 					+ "\nVocê possui R$: " + jogadorAtual.getDinheiro());
 			System.out.println("Comandos disponívels: [Jogar] [Sair] [Status]");
@@ -53,9 +53,14 @@ public class Jogo {
 
 			// Caso o jogador queira sair
 			if (escolha.equals("sair") || escolha.equals("Sair")) {
-				leitor.close();
-				break;
-
+				System.out.print("Tem certeza disso? (sim/nao)");
+				String certeza = leitor.nextLine();
+				if(certeza.equals("sim")) {
+					leitor.close();
+					break;
+				} else {
+					contador -= 1;
+				}
 			}
 
 			// Caso o jogador queira fazer a jogada
@@ -104,7 +109,7 @@ public class Jogo {
 
 						jogadorAtual.setDinheiro(jogadorAtual.getDinheiro() - multiplicadorASePagar);
 						System.out.println(
-								"Pagou o multiplicador. Dinheiro do jogador: " + jogadorAtual.getDinheiro() + "\n");
+								"Pagou R$"+multiplicadorASePagar+" de multiplicador. Dinheiro do jogador: " + jogadorAtual.getDinheiro() + "\n");
 					}
 					// Caso não tenha sido comprada, pergunta ao jogador se quer comprar
 					else {
@@ -131,10 +136,9 @@ public class Jogo {
 
 					// Caso a propriedade já esteja comprada, o jogador paga o aluguel
 					if (propriedade.isStatus() == false) {
-						System.out.println("aluguel: " + propriedade.getAluguel());
 
 						jogadorAtual.setDinheiro(jogadorAtual.getDinheiro() - propriedade.getAluguel());
-						System.out.println("Pagou aluguel. Dinheiro do jogador: " + jogadorAtual.getDinheiro() + "\n");
+						System.out.println("Pagou R$"+propriedade.getAluguel()+" de aluguel. Dinheiro do jogador: " + jogadorAtual.getDinheiro() + "\n");
 					}
 
 					// Caso não tenha sido comprada, pergunta ao jogador se quer comprar
@@ -221,23 +225,32 @@ public class Jogo {
 		return false;
 	}
 
+	public boolean validaQtdDeJogadores() {
+		try {
+			this.qtdJogadores = Integer.parseInt(leitor.nextLine());
+			return true;
+
+		} catch (NumberFormatException erro) {
+			System.out.println("Número inválido. Tente de novo!");
+			return false;
+		}
+	
+	}
+	
 	public void carregandoJogadores() {
 		ArrayList<String> lista_de_cores = carregandoCores();
 		boolean numeroJogadores = false;
-		int qtdJogadores = 0;
+		boolean boolJogadores = false;
+		
+		while(boolJogadores == false) {
+			
+			System.out.print("Quantos jogadores irão jogar? ");
+			boolJogadores = validaQtdDeJogadores();
+		}
 		
 		while (numeroJogadores == false) {
 
-			System.out.print("Quantos jogadores irão jogar? ");
-			try {
-				qtdJogadores = Integer.parseInt(leitor.nextLine());
-
-			} catch (NumberFormatException erro) {
-				System.out.println("Número inválido. Tente de novo!");
-				carregandoJogadores();
-			}
-
-			if (qtdJogadores < 2 || qtdJogadores > 8) {
+			if (this.qtdJogadores < 2 || this.qtdJogadores > 8) {
 				System.out.println("Número de jogadores inválido!");
 
 			} else {
@@ -247,7 +260,7 @@ public class Jogo {
 
 		// Pegando informações dos jogadores
 
-		for (int i = 0; i < qtdJogadores; i++) {
+		for (int i = 0; i < this.qtdJogadores; i++) {
 			System.out.print("Qual seu nome? ");
 			String nome = leitor.nextLine();
 
