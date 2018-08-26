@@ -14,4 +14,22 @@ public abstract class Posicao {
 	public String getNome() {
 		return this.nome;
 	}
+	
+	public int getPreco() {
+		return 0;
+	}
+	
+	public void setStatus(boolean status) {}
+	
+	public boolean isStatus() {
+		return true;
+	}
+	
+	public int getAluguel() {
+		return 0;
+	}
+
+	public int getMultiplicador() {
+		return 0;
+	}
 }
