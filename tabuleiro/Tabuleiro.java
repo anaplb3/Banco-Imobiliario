@@ -1,7 +1,6 @@
 package tabuleiro;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import posicoes.Companhia;
 import posicoes.Imposto;
@@ -14,8 +13,8 @@ import posicoes.SorteOuReves;
 
 public class Tabuleiro {
 
-	public LinkedList<Posicao> criandoTab() {
-		LinkedList<Posicao> tab = new LinkedList<>();
+	public ArrayList<Posicao> criandoTab() {
+		ArrayList<Posicao> tab = new ArrayList<>();
 		ArrayList<Propriedade> propriedades = criandoPropriedades();
 		Prisao prisao = new Prisao();
 		SorteOuReves sorte = new SorteOuReves();
