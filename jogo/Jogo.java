@@ -14,6 +14,10 @@ import tabuleiro.Jogador;
 import tabuleiro.Tabuleiro;
 import posicoes.Propriedade;
 
+
+/**
+ * Este classe é responsável por criar os jogadores e fazer as jogadas disponíveis
+ */
 public class Jogo {
 	private Scanner leitor;
 	private Tabuleiro tab;
