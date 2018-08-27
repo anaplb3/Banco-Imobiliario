@@ -28,6 +28,7 @@ public class Jogador {
 	}
 	/**
 		*Esse método está adicionando o dominío no Array de propriedades do jogador
+		*@param p É a posição (Propriedade ou Companhia) em que o jogador se encontra
 	*/
 	public void adicionandoPropriedade(Posicao p) {
 		this.propriedades.add(p);
