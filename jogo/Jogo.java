@@ -14,9 +14,9 @@ import tabuleiro.Jogador;
 import tabuleiro.Tabuleiro;
 import posicoes.Propriedade;
 
-
 /**
- * Este classe é responsável por criar os jogadores e fazer as jogadas disponíveis
+ * Este classe é responsável por criar os jogadores e fazer as jogadas
+ * disponíveis
  */
 public class Jogo {
 	private Scanner leitor;
@@ -26,12 +26,12 @@ public class Jogo {
 	private Dado d1, d2;
 	private int qtdJogadores;
 
-	
 	/**
-	 * Construtor da classe Jogo, que inicia os Dados, o Tabuleiro
-	 * o Scanner e o array de Jogadores
-	 * @see Dado.java
-	 * @see Tabuleiro.java
+	 * Construtor da classe Jogo, que inicia os Dados, o Tabuleiro o Scanner e o
+	 * array de Jogadores
+	 * 
+	 * @see Dado
+	 * @see Tabuleiro
 	 */
 	public Jogo() {
 		this.leitor = new Scanner(System.in);
@@ -43,14 +43,14 @@ public class Jogo {
 	}
 
 	/**
-	 * Calcula de quem é a vez de jogar, mostra os comandos
-	 * possíveis e os executa
-	 * @see Jogador.java
-	 * @see Posicao.java
-	 * @see Prisao.java
-	 * @see SorteOuReves.java
-	 * @see Imposto.java
-	 * @see Lucros.java
+	 * Calcula de quem é a vez de jogar, mostra os comandos possíveis e os executa
+	 * 
+	 * @see Jogador
+	 * @see Posicao
+	 * @see Prisao
+	 * @see SorteOuReves
+	 * @see Imposto
+	 * @see Lucros
 	 * @see ParadaLivre
 	 */
 	public void fazendoJogada() {
@@ -61,7 +61,7 @@ public class Jogo {
 		boolean loop = true;
 
 		/**
-		 * Vai rodando 
+		 * Vai rodando
 		 */
 		while (this.jogadores.size() >= 2 || loop == true) {
 			Jogador jogadorAtual = jogadores.get(contador);
@@ -78,8 +78,8 @@ public class Jogo {
 
 			/**
 			 * Série de if/else para determinar qual comando o jogador escolheu e executá-la
-			 */ 
-			
+			 */
+
 			if (escolha.equals("sair") || escolha.equals("Sair")) {
 				System.out.print("Tem certeza disso? (sim/nao) ");
 				String certeza = leitor.nextLine();
@@ -97,8 +97,8 @@ public class Jogo {
 				Posicao posicao;
 
 				/**
-				 *Tratando o erro quando o jogador ultrapassa os limites do array
-				 */ 
+				 * Tratando o erro quando o jogador ultrapassa os limites do array
+				 */
 				try {
 					posicao = tabuleiro.get(dado1 + dado2 + jogadores.get(contador).getPosicao());
 				} catch (IndexOutOfBoundsException erro) {
@@ -110,44 +110,7 @@ public class Jogo {
 
 				System.out.println(jogadorAtual.getNome() + " tirou " + dado1 + "," + dado2);
 
-				/**
-				 * Série de if/else para determinar em qual tipo de posição o jogador parou
-				 */
-				
-				if (posicao instanceof Prisao || posicao instanceof SorteOuReves) {
-					posicao.getNomeDaPosicao();
-
-				}
-
-				else if (posicao instanceof Imposto) {
-					posicao.getNomeDaPosicao();
-					posicao.alterandoSaldoDoJogador(jogadorAtual);
-					
-				} 
-				
-				else if (posicao instanceof Lucros) {
-					posicao.getNomeDaPosicao();
-					posicao.alterandoSaldoDoJogador(jogadorAtual);
-				}
-
-				else if (posicao instanceof ParadaLivre) {
-					System.out.println("Você está na parada livre!");
-				} 
-				
-				else if (posicao == null) {
-					System.out.println("Você está no ponto de partida!");
-				} 
-				
-				else {
-					posicao.getNomeDaPosicao();
-					if (posicao.isStatus() == false) {
-						pagandoAluguelOuMultiplicador(jogadorAtual, posicao, dado1, dado2);
-					} else {
-						System.out.print("Você deseja comprar? (sim/nao) ");
-						String comprar = leitor.nextLine();
-						escolhaDeCompra(comprar, jogadorAtual, posicao);
-					}
-				}
+				determinandoTipoDePosicao(posicao, jogadorAtual, dado1, dado2);
 
 				/**
 				 * Setando posição do jogador depois que faz a jogada
@@ -174,35 +137,99 @@ public class Jogo {
 			/**
 			 * Incrementando contador para pegar jogador na ordem
 			 */
-			if (contador == jogadores.size() - 1) {
-				contador = 0;
-			} else {
-				contador += 1;
-			}
+			contador = ordenandoJogadores(contador);
 
 		}
 	}
 
-	
+	/**
+	 * Método que seta o índice do jogador da vez
+	 * @param contador É um indice para o array de jogadores
+	 */
+	public int ordenandoJogadores(int contador) {
+		if (contador == jogadores.size() - 1) {
+			contador = 0;
+		} else {
+			contador += 1;
+		}
+
+		return contador;
+	}
+
+	/**
+	 * Método que verifica em que posição o jogador parou e executa um método de
+	 * acordo com a posição
+	 * 
+	 * @param posicao
+	 *            Posição atual do jogador
+	 * @param jogadorAtual
+	 *            jogador da rodada
+	 * @param dado1
+	 *            Resultado do dado1
+	 * @param dado2
+	 *            Resultado do dado2
+	 */
+	public void determinandoTipoDePosicao(Posicao posicao, Jogador jogadorAtual, int dado1, int dado2) {
+		if (posicao instanceof Prisao || posicao instanceof SorteOuReves) {
+			posicao.getNomeDaPosicao();
+
+		}
+
+		else if (posicao instanceof Imposto) {
+			posicao.getNomeDaPosicao();
+			posicao.alterandoSaldoDoJogador(jogadorAtual);
+
+		}
+
+		else if (posicao instanceof Lucros) {
+			posicao.getNomeDaPosicao();
+			posicao.alterandoSaldoDoJogador(jogadorAtual);
+		}
+
+		else if (posicao instanceof ParadaLivre) {
+			System.out.println("Você está na parada livre!");
+		}
+
+		else if (posicao == null) {
+			System.out.println("Você está no ponto de partida!");
+		}
+
+		else {
+			posicao.getNomeDaPosicao();
+			if (posicao.isStatus() == false) {
+				pagandoAluguelOuMultiplicador(jogadorAtual, posicao, dado1, dado2);
+			} else {
+				System.out.print("Você deseja comprar? (sim/nao) ");
+				String comprar = leitor.nextLine();
+				escolhaDeCompra(comprar, jogadorAtual, posicao);
+			}
+		}
+	}
+
 	/**
 	 * Este método retira o valor do aluguel ou multiplicador do saldo do jogador
-	 * @param jogadorAtual Jogador da rodada
-	 * @param posicao Propriedade ou Companhia que ele se encontra
-	 * @param dado1 Resultado do primeiro dado
-	 * @param dado2 Resultado do segundo dado
-	 * @see Propriedade.java
-	 * @see Jogador.java
-	 * @see Posicao.java
+	 * 
+	 * @param jogadorAtual
+	 *            Jogador da rodada
+	 * @param posicao
+	 *            Propriedade ou Companhia que ele se encontra
+	 * @param dado1
+	 *            Resultado do primeiro dado
+	 * @param dado2
+	 *            Resultado do segundo dado
+	 * @see Propriedade
+	 * @see Jogador
+	 * @see Posicao
 	 */
 	public void pagandoAluguelOuMultiplicador(Jogador jogadorAtual, Posicao posicao, int dado1, int dado2) {
-	
+
 		if (posicao instanceof Propriedade) {
 
 			jogadorAtual.setDinheiro(jogadorAtual.getDinheiro() - posicao.getAluguel());
 			System.out.println("Pagou R$" + posicao.getAluguel() + " de aluguel. Dinheiro do jogador: "
 					+ jogadorAtual.getDinheiro() + "\n");
-		} 
-		
+		}
+
 		else {
 			int multiplicadorASePagar = (dado1 + dado2) * posicao.getMultiplicador();
 
@@ -213,12 +240,17 @@ public class Jogo {
 	}
 
 	/**
-	 * Este método verifica se o jogador quer comprar determinada Propriedade ou Companhia
-	 * @param comprar Escolha do jogador em comprar ou não
-	 * @param jogadorAtual jogador da rodada
-	 * @param posicao Domínio em que ele se encontra
-	 * @see Jogador.java
-	 * @see Posicao.java
+	 * Este método verifica se o jogador quer comprar determinada Propriedade ou
+	 * Companhia
+	 * 
+	 * @param comprar
+	 *            Escolha do jogador em comprar ou não
+	 * @param jogadorAtual
+	 *            jogador da rodada
+	 * @param posicao
+	 *            Domínio em que ele se encontra
+	 * @see Jogador
+	 * @see Posicao
 	 */
 	public void escolhaDeCompra(String comprar, Jogador jogadorAtual, Posicao posicao) {
 		if (comprar.equals("sim") || comprar.equals("Sim")) {
@@ -233,6 +265,7 @@ public class Jogo {
 
 	/**
 	 * Este método inicia o array com as cores
+	 * 
 	 * @return Retorna um array com as cores disponíveis
 	 */
 	public ArrayList<String> carregandoCores() {
@@ -249,11 +282,14 @@ public class Jogo {
 
 		return lista_de_cores;
 	}
-	
+
 	/**
 	 * Este método verifica se a cor escolhida está disponível
-	 * @param cor Cor escolhida pelo jogador
-	 * @param list_cor Array com as cores disponíveis
+	 * 
+	 * @param cor
+	 *            Cor escolhida pelo jogador
+	 * @param list_cor
+	 *            Array com as cores disponíveis
 	 * @return Retorna um boolean dependo da disponibilidade da cor
 	 */
 	public boolean validarCor(String cor, ArrayList<String> list_cor) {
@@ -274,7 +310,9 @@ public class Jogo {
 	}
 
 	/**
-	 * Este método verifica se o jogador entrou com uma quantidade de jogadores válida
+	 * Este método verifica se o jogador entrou com uma quantidade de jogadores
+	 * válida
+	 * 
 	 * @return Retorna um boolean true se for válido ou um false se for inválido
 	 */
 	public boolean validaQtdDeJogadores() {
@@ -285,21 +323,21 @@ public class Jogo {
 			System.out.println("Número inválido. Tente de novo!\n");
 			return false;
 		}
-		
-		
+
 		if (this.qtdJogadores < 2 || this.qtdJogadores > 8) {
-				System.out.println("Número de jogadores inválido!\n");
-				return false;
-			} else {
-				return true;
-			}
-		
+			System.out.println("Número de jogadores inválido!\n");
+			return false;
+		} else {
+			return true;
+		}
 
 	}
-	
+
 	/**
-	 * Este método inicia o array com as jogadores, pegando as informações e testando se as cores e a quantidade são válidas
-	 * @see Jogador.java
+	 * Este método inicia o array com as jogadores, pegando as informações e
+	 * testando se as cores e a quantidade são válidas
+	 * 
+	 * @see Jogador
 	 */
 	public void carregandoJogadores() {
 		ArrayList<String> lista_de_cores = carregandoCores();
