@@ -15,13 +15,18 @@ import tabuleiro.Tabuleiro;
 import posicoes.Propriedade;
 
 public class Jogo {
-	Scanner leitor;
-	Tabuleiro tab;
-	ArrayList<Jogador> jogadores;
-	ArrayList<Posicao> tabuleiro;
-	Dado d1, d2;
-	int qtdJogadores;
+	private Scanner leitor;
+	private Tabuleiro tab;
+	private ArrayList<Jogador> jogadores;
+	private ArrayList<Posicao> tabuleiro;
+	private Dado d1, d2;
+	private int qtdJogadores;
 
+	
+	/**
+	 * Construtor da classe Jogo, que inicia os Dados, o Tabuleiro
+	 * o Scanner e o array de Jogadores
+	 */
 	public Jogo() {
 		this.leitor = new Scanner(System.in);
 		this.jogadores = new ArrayList<>();
@@ -31,7 +36,12 @@ public class Jogo {
 		this.tabuleiro = tab.criandoTab();
 	}
 
-	// Fazendo jogada
+	/**
+	 * Calcula de quem é a vez de jogar, mostra os comandos
+	 * possíveis e 
+	 * @return      the image at the specified URL
+	 * @see         Image
+	 */
 	public void fazendoJogada() {
 
 		System.out.println("O jogo vai começar. Divirta-se!");
@@ -89,10 +99,11 @@ public class Jogo {
 
 				// Caso caia no imposto de renda ou lucros e dividendos
 				else if (posicao instanceof Imposto) {
-					System.out.println("Você caiu em Lucros e Dividendos. Ganhou 200!");
+					posicao.getNomeDaPosicao();
 					posicao.alterandoSaldoDoJogador(jogadorAtual);
+					
 				} else if (posicao instanceof Lucros) {
-					System.out.println("Você caiu no Imposto de Renda! Pague 200.");
+					posicao.getNomeDaPosicao();
 					posicao.alterandoSaldoDoJogador(jogadorAtual);
 				}
 
@@ -108,6 +119,7 @@ public class Jogo {
 				
 				//Caso seja propriedade ou companhia
 				else {
+					posicao.getNomeDaPosicao();
 					if (posicao.isStatus() == false) {
 						pagandoAluguelOuMultiplicador(jogadorAtual, posicao, dado1, dado2);
 					} else {
@@ -149,18 +161,18 @@ public class Jogo {
 		}
 	}
 
-	public void pagandoAluguelOuMultiplicador(Jogador jogadorAtual, Posicao p, int dado1, int dado2) {
+	public void pagandoAluguelOuMultiplicador(Jogador jogadorAtual, Posicao posicao, int dado1, int dado2) {
 	
-		if (p instanceof Propriedade) {
+		if (posicao instanceof Propriedade) {
 
-			jogadorAtual.setDinheiro(jogadorAtual.getDinheiro() - p.getAluguel());
-			System.out.println("Pagou R$" + p.getAluguel() + " de aluguel. Dinheiro do jogador: "
+			jogadorAtual.setDinheiro(jogadorAtual.getDinheiro() - posicao.getAluguel());
+			System.out.println("Pagou R$" + posicao.getAluguel() + " de aluguel. Dinheiro do jogador: "
 					+ jogadorAtual.getDinheiro() + "\n");
 		} 
 		
 		// Aqui a posicao é uma Companhia
 		else {
-			int multiplicadorASePagar = (dado1 + dado2) * p.getMultiplicador();
+			int multiplicadorASePagar = (dado1 + dado2) * posicao.getMultiplicador();
 
 			jogadorAtual.setDinheiro(jogadorAtual.getDinheiro() - multiplicadorASePagar);
 			System.out.println("Pagou R$" + multiplicadorASePagar + " de multiplicador. Dinheiro do jogador: "
@@ -172,7 +184,7 @@ public class Jogo {
 		if (comprar.equals("sim") || comprar.equals("Sim")) {
 			jogadorAtual.setDinheiro(jogadorAtual.getDinheiro() - posicao.getPreco());
 			jogadorAtual.adicionandoPropriedade(posicao);
-			System.out.println("Comprou propriedade. Dinheiro do jogador: " + jogadorAtual.getDinheiro() + "\n");
+			System.out.println("Comprou esse domínio. Dinheiro do jogador: " + jogadorAtual.getDinheiro() + "\n");
 			posicao.setStatus(false);
 		} else {
 			System.out.println("Você não comprou esta propriedade.");
