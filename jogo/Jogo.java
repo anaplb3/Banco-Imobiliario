@@ -26,6 +26,8 @@ public class Jogo {
 	/**
 	 * Construtor da classe Jogo, que inicia os Dados, o Tabuleiro
 	 * o Scanner e o array de Jogadores
+	 * @see Dado.java
+	 * @see Tabuleiro.java
 	 */
 	public Jogo() {
 		this.leitor = new Scanner(System.in);
@@ -38,9 +40,14 @@ public class Jogo {
 
 	/**
 	 * Calcula de quem é a vez de jogar, mostra os comandos
-	 * possíveis e 
-	 * @return      the image at the specified URL
-	 * @see         Image
+	 * possíveis e os executa
+	 * @see Jogador.java
+	 * @see Posicao.java
+	 * @see Prisao.java
+	 * @see SorteOuReves.java
+	 * @see Imposto.java
+	 * @see Lucros.java
+	 * @see ParadaLivre
 	 */
 	public void fazendoJogada() {
 
@@ -161,6 +168,17 @@ public class Jogo {
 		}
 	}
 
+	
+	/**
+	 * Este método retira o valor do aluguel ou multiplicador do saldo do jogador
+	 * @param jogadorAtual Jogador da rodada
+	 * @param posicao Propriedade ou Companhia que ele se encontra
+	 * @param dado1 Resultado do primeiro dado
+	 * @param dado2 Resultado do segundo dado
+	 * @see Propriedade.java
+	 * @see Jogador.java
+	 * @see Posicao.java
+	 */
 	public void pagandoAluguelOuMultiplicador(Jogador jogadorAtual, Posicao posicao, int dado1, int dado2) {
 	
 		if (posicao instanceof Propriedade) {
@@ -180,6 +198,14 @@ public class Jogo {
 		}
 	}
 
+	/**
+	 * Este método verifica se o jogador quer comprar determinada Propriedade ou Companhia
+	 * @param comprar Escolha do jogador em comprar ou não
+	 * @param jogadorAtual jogador da rodada
+	 * @param posicao Domínio em que ele se encontra
+	 * @see Jogador.java
+	 * @see Posicao.java
+	 */
 	public void escolhaDeCompra(String comprar, Jogador jogadorAtual, Posicao posicao) {
 		if (comprar.equals("sim") || comprar.equals("Sim")) {
 			jogadorAtual.setDinheiro(jogadorAtual.getDinheiro() - posicao.getPreco());
@@ -191,6 +217,10 @@ public class Jogo {
 		}
 	}
 
+	/**
+	 * Este método inicia o array com as cores
+	 * @return Retorna um array com as cores disponíveis
+	 */
 	public ArrayList<String> carregandoCores() {
 		ArrayList<String> lista_de_cores = new ArrayList<>();
 
@@ -205,7 +235,13 @@ public class Jogo {
 
 		return lista_de_cores;
 	}
-
+	
+	/**
+	 * Este método verifica se a cor escolhida está disponível
+	 * @param cor Cor escolhida pelo jogador
+	 * @param list_cor Array com as cores disponíveis
+	 * @return Retorna um boolean dependo da disponibilidade da cor
+	 */
 	public boolean validarCor(String cor, ArrayList<String> list_cor) {
 		// Retira a cor do jogador da lista de cores
 		try {
@@ -223,6 +259,10 @@ public class Jogo {
 		return false;
 	}
 
+	/**
+	 * Este método verifica se o jogador entrou com uma quantidade de jogadores válida
+	 * @return Retorna um boolean true se for válido ou um false se for inválido
+	 */
 	public boolean validaQtdDeJogadores() {
 		try {
 			this.qtdJogadores = Integer.parseInt(leitor.nextLine());
@@ -242,7 +282,11 @@ public class Jogo {
 		
 
 	}
-
+	
+	/**
+	 * Este método inicia o array com as jogadores, pegando as informações e testando se as cores e a quantidade são válidas
+	 * @see Jogador.java
+	 */
 	public void carregandoJogadores() {
 		ArrayList<String> lista_de_cores = carregandoCores();
 		boolean boolJogadores = false;
