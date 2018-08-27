@@ -147,6 +147,7 @@ public class Jogo {
 	 * 
 	 * @param contador
 	 *            É um indice para o array de jogadores
+	 * @return Retorna o indice do jogador da rodada
 	 */
 	public int ordenandoJogadores(int contador) {
 		if (contador == jogadores.size() - 1) {
@@ -369,7 +370,7 @@ public class Jogo {
 				corJaEscolhida = validarCor(cor, lista_de_cores);
 			}
 
-			Jogador j = new Jogador(nome, cor, 0, 1500);
+			Jogador j = new Jogador(nome, cor);
 			this.jogadores.add(j);
 		}
 	}
