@@ -3,22 +3,22 @@ package tabuleiro;
 import java.util.Random;
 
 /**
-	*Esse método está gerando os números dos dados.
-	*
-*/
+ * Esta classe está gerando os números dos dados.
+ *
+ */
 public class Dado {
 	Random gerador;
-	
-	/**
-		*Esse método instancia um objeto do tipo random.
 
-	*/
+	/**
+	 * Esse método instancia um objeto do tipo random.
+	 * 
+	 */
 	public Dado() {
 		this.gerador = new Random();
 	}
 
 	public int getDado() {
-		return gerador.nextInt(6)+1;
+		return gerador.nextInt(6) + 1;
 	}
 
 }

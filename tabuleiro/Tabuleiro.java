@@ -11,6 +11,9 @@ import posicoes.Prisao;
 import posicoes.Propriedade;
 import posicoes.SorteOuReves;
 
+/**
+ * Esta classe é responsável por criar o tabuleiro
+ */
 public class Tabuleiro {
 	private Propriedade prop;
 

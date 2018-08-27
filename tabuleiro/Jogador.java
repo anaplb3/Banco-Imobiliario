@@ -6,19 +6,28 @@ import posicoes.Companhia;
 import posicoes.Posicao;
 import posicoes.Propriedade;
 
+/**
+ * Esta classe tem os atributos de cada jogador
+ */
 public class Jogador {
 	private String nome;
 	private String cor;
 	private int posicao;
 	private double dinheiro;
 	ArrayList<Posicao> propriedades;
+
 	/**
-		*Esse construtor está setando as informações do jogador
-		*@param nome Nome do jogador
-		*@param cor Cor do jogador
-		*@param posicao Posição atual do jogador no tabuleiro
-		*@param dinheiro Quanto o jogador tem de saldo
-	*/
+	 * Esse construtor está setando as informações do jogador
+	 * 
+	 * @param nome
+	 *            Nome do jogador
+	 * @param cor
+	 *            Cor do jogador
+	 * @param posicao
+	 *            Posição atual do jogador no tabuleiro
+	 * @param dinheiro
+	 *            Quanto o jogador tem de saldo
+	 */
 	public Jogador(String nome, String cor, int posicao, double dinheiro) {
 		this.nome = nome;
 		this.cor = cor;
@@ -26,10 +35,14 @@ public class Jogador {
 		this.dinheiro = dinheiro;
 		this.propriedades = new ArrayList<>();
 	}
+
 	/**
-		*Esse método está adicionando o dominío no Array de propriedades do jogador
-		*@param p É a posição (Propriedade ou Companhia) em que o jogador se encontra
-	*/
+	 * Esse método está adicionando o dominío no Array de propriedades do jogador
+	 * 
+	 * @param p
+	 *            É a posição (Propriedade ou Companhia) em que o jogador se
+	 *            encontra
+	 */
 	public void adicionandoPropriedade(Posicao p) {
 		this.propriedades.add(p);
 	}
@@ -65,10 +78,13 @@ public class Jogador {
 	public void setCor(String cor) {
 		this.cor = cor;
 	}
+
 	/**
-		*Esse método está criando a opção de Status do jogador
-		*@param tabuleiro É um Array com todas as posições disponíveis no tabuleiro
-	*/
+	 * Esse método está criando a opção de Status do jogador
+	 * 
+	 * @param tabuleiro
+	 *            É um Array com todas as posições disponíveis no tabuleiro
+	 */
 	public void status(ArrayList<Posicao> tabuleiro) {
 		Posicao lugar = tabuleiro.get(this.posicao);
 
@@ -86,15 +102,14 @@ public class Jogador {
 		if (this.propriedades.size() > 0) {
 			System.out.println("Essas são suas propriedades: ");
 			for (Posicao prop : this.propriedades) {
-				if(prop instanceof Propriedade) {
+				if (prop instanceof Propriedade) {
 					Propriedade p = (Propriedade) prop;
-					System.out.println(p.getNome()+", da cor "+p.getCor()+" com aluguel de R$"+p.getAluguel());
+					System.out.println(p.getNome() + ", da cor " + p.getCor() + " com aluguel de R$" + p.getAluguel());
 				} else {
 					Companhia c = (Companhia) prop;
-					System.out.println(c.getNome()+", com multiplicador de "+c.getMultiplicador());
+					System.out.println(c.getNome() + ", com multiplicador de " + c.getMultiplicador());
 				}
-				
-				
+
 			}
 			System.out.println("\n");
 
