@@ -3,7 +3,7 @@ package posicoes;
 import tabuleiro.Jogador;
 
 public abstract class Posicao {
-	String nome;
+	protected String nome;
 	
 	public void getNomeDaPosicao() {
 		System.out.println("Você está em "+this.nome);
