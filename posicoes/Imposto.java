@@ -22,4 +22,8 @@ public class Imposto extends Posicao{
 		j.setDinheiro(j.getDinheiro() - 200);
 	}
 
+	public String getNome() {
+		return "imposto de renda";
+	}
+
 }

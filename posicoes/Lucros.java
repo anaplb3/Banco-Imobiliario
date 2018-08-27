@@ -26,4 +26,7 @@ public class Lucros extends Posicao{
 		j.setDinheiro(j.getDinheiro() + 200);
 	}
 	
+	public String getNome() {
+		return "lucros ou dividendos";
+	}
 }

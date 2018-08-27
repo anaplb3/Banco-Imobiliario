@@ -13,4 +13,7 @@ public class ParadaLivre extends Posicao{
 		System.out.println("Você está em uma parada livre");
 	}
 	
+	public String getNome() {
+		return "parada livre";
+	}
 }
