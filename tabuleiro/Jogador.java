@@ -12,7 +12,13 @@ public class Jogador {
 	private int posicao;
 	private double dinheiro;
 	ArrayList<Posicao> propriedades;
-
+	/**
+		*Esse construtor está setando as informações do jogador
+		*@param nome Nome do jogador
+		*@param cor Cor do jogador
+		*@param posicao Posição atual do jogador no tabuleiro
+		*@param dinheiro Quanto o jogador tem de saldo
+	*/
 	public Jogador(String nome, String cor, int posicao, double dinheiro) {
 		this.nome = nome;
 		this.cor = cor;
@@ -20,7 +26,9 @@ public class Jogador {
 		this.dinheiro = dinheiro;
 		this.propriedades = new ArrayList<>();
 	}
-
+	/**
+		*Esse método está adicionando o dominío no Array de propriedades do jogador
+	*/
 	public void adicionandoPropriedade(Posicao p) {
 		this.propriedades.add(p);
 	}
@@ -56,7 +64,10 @@ public class Jogador {
 	public void setCor(String cor) {
 		this.cor = cor;
 	}
-
+	/**
+		*Esse método está criando a opção de Status do jogador
+		*@param tabuleiro É um Array com todas as posições disponíveis no tabuleiro
+	*/
 	public void status(ArrayList<Posicao> tabuleiro) {
 		Posicao lugar = tabuleiro.get(this.posicao);
 

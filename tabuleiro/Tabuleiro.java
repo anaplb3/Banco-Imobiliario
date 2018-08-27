@@ -12,6 +12,10 @@ import posicoes.Propriedade;
 import posicoes.SorteOuReves;
 
 public class Tabuleiro {
+	/**
+		*Esse método adiciona os objetos componentes do tabuleiro no tabuleiro
+		*@param criandoTab Está setando os componentes no tabuleiro
+	*/
 
 	public ArrayList<Posicao> criandoTab() {
 		ArrayList<Posicao> tab = new ArrayList<>();
@@ -74,7 +78,10 @@ public class Tabuleiro {
 		return tab;
 	}
 
-	/// Criando as cores das propriedades///
+	/** 
+		*Esse método está adicionando as cores das propriedades
+		@param criandoPropriedades Está setando as cores nas propriedades
+	*/
 	public ArrayList<Propriedade> criandoPropriedades() {
 		ArrayList<String> nomes = nomesDasPropriedades();
 		ArrayList<Integer> precos = precoDasPropriedades();
@@ -112,7 +119,10 @@ public class Tabuleiro {
 		return propriedades;
 
 	}
-
+	/**
+		*Esse método está adiconando os aluguéis as propriedades
+		*@param alugueis Está setando os aluguéis nas propriedades
+	*/
 	public ArrayList<Integer> alugueis() {
 		ArrayList<Integer> aluguel = new ArrayList<>();
 
@@ -142,7 +152,10 @@ public class Tabuleiro {
 		return aluguel;
 
 	}
-
+	/**
+		*Esse método está adicinando os nomes as Propriedades
+		*@param nomesDasProprieadades Está setando os nomes correspondentes nas devidas propriedades
+	*/
 	public ArrayList<String> nomesDasPropriedades() {
 		ArrayList<String> nomes = new ArrayList<>();
 
@@ -177,7 +190,10 @@ public class Tabuleiro {
 
 		return nomes;
 	}
-
+	/**
+		*Esse método está adiconando os preços nas propriedades
+		*@param precoDasPropriedades Está setando os preços das propriedades
+	*/
 	public ArrayList<Integer> precoDasPropriedades() {
 		ArrayList<Integer> precos = new ArrayList<>();
 
