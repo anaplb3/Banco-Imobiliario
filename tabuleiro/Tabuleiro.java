@@ -29,6 +29,7 @@ public class Tabuleiro {
 
 	/**
 	 * Esse método adiciona os objetos componentes do tabuleiro no tabuleiro
+	 * @return Retorna um array com todas as posições dentro da lista, formando assim o tabuleiro
 	 */
 
 	public ArrayList<Posicao> criandoTab() {

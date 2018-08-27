@@ -23,16 +23,12 @@ public class Jogador {
 	 *            Nome do jogador
 	 * @param cor
 	 *            Cor do jogador
-	 * @param posicao
-	 *            Posição atual do jogador no tabuleiro
-	 * @param dinheiro
-	 *            Quanto o jogador tem de saldo
 	 */
-	public Jogador(String nome, String cor, int posicao, double dinheiro) {
+	public Jogador(String nome, String cor) {
 		this.nome = nome;
 		this.cor = cor;
-		this.posicao = posicao;
-		this.dinheiro = dinheiro;
+		this.posicao = 0;
+		this.dinheiro = 1500;
 		this.propriedades = new ArrayList<>();
 	}
 
@@ -45,6 +41,15 @@ public class Jogador {
 	 */
 	public void adicionandoPropriedade(Posicao p) {
 		this.propriedades.add(p);
+	}
+	
+	
+	public ArrayList<Posicao> getPropriedades() {
+		return propriedades;
+	}
+
+	public void setPropriedades(ArrayList<Posicao> propriedades) {
+		this.propriedades = propriedades;
 	}
 
 	public void setDinheiro(double money) {
