@@ -60,18 +60,26 @@ public class Jogo {
 		int dado1, dado2;
 		boolean loop = true;
 
+		/**
+		 * Vai rodando 
+		 */
 		while (this.jogadores.size() >= 2 || loop == true) {
 			Jogador jogadorAtual = jogadores.get(contador);
 			boolean jaSetouPosicaoAntes = false;
 
-			// Mostrando situação do jogador
+			/**
+			 * Mostrando situação do jogador
+			 */
 			System.out.println("\nVez de " + jogadorAtual.getNome() + "(" + jogadorAtual.getCor() + ")"
 					+ "\nVocê possui R$: " + jogadorAtual.getDinheiro());
 			System.out.println("Comandos disponívels: [Jogar] [Sair] [Status]");
 			System.out.print("Sua escolha: ");
 			String escolha = leitor.nextLine();
 
-			// Caso o jogador queira sair
+			/**
+			 * Série de if/else para determinar qual comando o jogador escolheu e executá-la
+			 */ 
+			
 			if (escolha.equals("sair") || escolha.equals("Sair")) {
 				System.out.print("Tem certeza disso? (sim/nao) ");
 				String certeza = leitor.nextLine();
@@ -83,13 +91,14 @@ public class Jogo {
 				}
 			}
 
-			// Caso o jogador queira fazer a jogada
 			else if (escolha.equals("jogar") || escolha.equals("Jogar")) {
 				dado1 = d1.getDado();
 				dado2 = d2.getDado();
 				Posicao posicao;
 
-				// Tratando o erro quando o jogador ultrapassa os limites do array
+				/**
+				 *Tratando o erro quando o jogador ultrapassa os limites do array
+				 */ 
 				try {
 					posicao = tabuleiro.get(dado1 + dado2 + jogadores.get(contador).getPosicao());
 				} catch (IndexOutOfBoundsException erro) {
@@ -101,34 +110,34 @@ public class Jogo {
 
 				System.out.println(jogadorAtual.getNome() + " tirou " + dado1 + "," + dado2);
 
-				// Caso seja prisão ou sorte ou revés, que ainda não está implementado
-				// completamente
+				/**
+				 * Série de if/else para determinar em qual tipo de posição o jogador parou
+				 */
+				
 				if (posicao instanceof Prisao || posicao instanceof SorteOuReves) {
 					posicao.getNomeDaPosicao();
 
 				}
 
-				// Caso caia no imposto de renda ou lucros e dividendos
 				else if (posicao instanceof Imposto) {
 					posicao.getNomeDaPosicao();
 					posicao.alterandoSaldoDoJogador(jogadorAtual);
 					
-				} else if (posicao instanceof Lucros) {
+				} 
+				
+				else if (posicao instanceof Lucros) {
 					posicao.getNomeDaPosicao();
 					posicao.alterandoSaldoDoJogador(jogadorAtual);
 				}
 
-				// Caso caia em uma parada livre
 				else if (posicao instanceof ParadaLivre) {
 					System.out.println("Você está na parada livre!");
 				} 
 				
-				//Caso esteja no ponto de partida
 				else if (posicao == null) {
 					System.out.println("Você está no ponto de partida!");
 				} 
 				
-				//Caso seja propriedade ou companhia
 				else {
 					posicao.getNomeDaPosicao();
 					if (posicao.isStatus() == false) {
@@ -140,7 +149,9 @@ public class Jogo {
 					}
 				}
 
-				// Setando posição do jogador depois que faz a jogada
+				/**
+				 * Setando posição do jogador depois que faz a jogada
+				 */
 				if (jaSetouPosicaoAntes == false) {
 					int posicaoAtual = jogadorAtual.getPosicao();
 					jogadorAtual.setPosicao(posicaoAtual + dado1 + dado2);
@@ -148,7 +159,6 @@ public class Jogo {
 
 			}
 
-			// Caso escolha ver o status
 			else if (escolha.equals("status") || escolha.equals("Status")) {
 
 				jogadorAtual.status(this.tabuleiro);
@@ -156,13 +166,14 @@ public class Jogo {
 				contador -= 1;
 			}
 
-			// Caso escolha um comando inválido
 			else {
 				System.out.println("Comando não é válido. Tente de novo!");
 				contador -= 1;
 			}
 
-			// Incrementando contador para pegar jogador na ordem
+			/**
+			 * Incrementando contador para pegar jogador na ordem
+			 */
 			if (contador == jogadores.size() - 1) {
 				contador = 0;
 			} else {
@@ -192,7 +203,6 @@ public class Jogo {
 					+ jogadorAtual.getDinheiro() + "\n");
 		} 
 		
-		// Aqui a posicao é uma Companhia
 		else {
 			int multiplicadorASePagar = (dado1 + dado2) * posicao.getMultiplicador();
 

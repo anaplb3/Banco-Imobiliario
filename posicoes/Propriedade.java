@@ -1,5 +1,8 @@
 package posicoes;
 
+/**
+* Essa classe representa uma propriedade do jogo, tendo os atributos correspondentes
+*/
 public class Propriedade extends Posicao{
 	private String nome;
 	private int preco;
@@ -7,6 +10,7 @@ public class Propriedade extends Posicao{
 	private int aluguel;
 	private String cor;
 	
+
 	public Propriedade() {
 		this.nome = "";
 		this.preco = 0;

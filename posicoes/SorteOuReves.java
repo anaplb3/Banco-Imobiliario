@@ -1,5 +1,8 @@
 package posicoes;
 
+/**
+* Essa classe representa a posição Sorte ou Revés do tabuleiro 
+*/
 public class SorteOuReves extends Posicao{
 
 	public void getNomeDaPosicao() {
