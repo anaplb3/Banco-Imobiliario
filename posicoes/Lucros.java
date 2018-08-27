@@ -20,7 +20,7 @@ public class Lucros extends Posicao{
 	/**
 	 * Esse método altera o saldo do jogador, adicionando R$200
 	 *@param j Jogador atual da rodada
-	 *@see Jogador.java
+	 *@see Jogador
 	 */
 	public void alterandoSaldoDoJogador(Jogador j) {
 		j.setDinheiro(j.getDinheiro() + 200);

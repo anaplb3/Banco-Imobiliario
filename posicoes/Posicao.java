@@ -4,7 +4,7 @@ import tabuleiro.Jogador;
 
 /**
 * Essa classe abstrata possui vários métodos que as classes que herdeiras possuem
-* @see Jogador.java
+* @see Jogador
 */
 public abstract class Posicao {
 	protected String nome;
