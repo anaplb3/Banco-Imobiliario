@@ -17,6 +17,7 @@ import posicoes.Propriedade;
 /**
  * Este classe é responsável por criar os jogadores e fazer as jogadas
  * disponíveis
+ * 
  * @see Jogador
  * @see Posicao
  * @see Dado
@@ -63,7 +64,7 @@ public class Jogo {
 		boolean loop = true;
 
 		/**
-		 * Vai rodando 
+		 * Vai rodando
 		 */
 		while (this.jogadores.size() >= 2 || loop == true) {
 			Jogador jogadorAtual = jogadores.get(contador);
@@ -143,8 +144,9 @@ public class Jogo {
 
 	/**
 	 * Método que seta o índice do jogador da vez
-	 * @param contador 
-	 *				É um indice para o array de jogadores
+	 * 
+	 * @param contador
+	 *            É um indice para o array de jogadores
 	 */
 	public int ordenandoJogadores(int contador) {
 		if (contador == jogadores.size() - 1) {

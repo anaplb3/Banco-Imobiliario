@@ -2,7 +2,8 @@ package jogo;
 
 /**
  * Este classe é responsável por iniciar a partida
- * @see Jogo.java
+ * 
+ * @see Jogo
  */
 public class TestandoJogo {
 	public static void main(String[] args) {
