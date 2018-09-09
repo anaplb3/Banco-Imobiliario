@@ -2,6 +2,8 @@ package posicoes;
 
 import java.util.ArrayList;
 
+import tabuleiro.Jogador;
+
 /**
  * Essa classe representa uma propriedade do jogo, tendo os atributos
  * correspondentes
@@ -12,11 +14,13 @@ public class Propriedade extends Posicao {
 	private boolean status;
 	private int aluguel;
 	private String cor;
+	private Jogador proprietario;
 
 	public Propriedade() {
 		this.nome = "";
 		this.preco = 0;
 		this.aluguel = 0;
+		this.proprietario = null;
 	}
 
 	public Propriedade(String nome, int preco, int aluguel) {
@@ -28,6 +32,14 @@ public class Propriedade extends Posicao {
 
 	public void getNomeDaPosicao() {
 		System.out.println("Você está em " + this.nome);
+	}
+	
+	public Jogador getProprietario() {
+		return this.proprietario;
+	}
+
+	public void setProprietario(Jogador j) {
+		this.proprietario = j;
 	}
 
 	public String getCor() {
@@ -228,6 +240,33 @@ public class Propriedade extends Posicao {
 		precos.add(260);
 
 		return precos;
+	}
+	
+	
+	
+	/**
+	 * Este método retira o valor do aluguel do saldo do jogador
+	 * 
+	 * @param jogadorAtual
+	 *            Jogador da rodada
+	 * @param posicao
+	 *            Propriedade que ele se encontra
+	 * @param dado1
+	 *            Resultado do primeiro dado
+	 * @param dado2
+	 *            Resultado do segundo dado
+	 * @see Jogador
+	 * @see Posicao
+	 */
+	public void pagandoAluguelOuMultiplicador(Jogador jogadorAtual, Posicao posicao, int dado1, int dado2) {
+		
+		Jogador dono = posicao.getProprietario();
+		dono.setDinheiro(dono.getDinheiro() + posicao.getAluguel());
+		
+		jogadorAtual.setDinheiro(jogadorAtual.getDinheiro() - posicao.getAluguel());
+		System.out.println("Pagou R$" + posicao.getAluguel() + " de aluguel a "+dono.getNome()+". Dinheiro do jogador: "
+				+ jogadorAtual.getDinheiro() + "\n");
+		
 	}
 
 }
