@@ -1,5 +1,7 @@
 package posicoes;
 
+import tabuleiro.Jogador;
+
 /**
  * Esta classe tem os atributos da posição Companhia
  */
@@ -8,6 +10,7 @@ public class Companhia extends Posicao{
 	private int preco;
 	private boolean status;
 	private int multiplicador;
+	private Jogador proprietario;
 	
 	/**
 	 * Construtor iniciando atributos vazios
@@ -29,9 +32,17 @@ public class Companhia extends Posicao{
 		this.preco = preco;
 		this.status = true;
 		this.multiplicador = multiplicador;
+		this.proprietario = null;
+	}
+	
+	public Jogador getProprietario() {
+		return this.proprietario;
 	}
 
-
+	public void setProprietario(Jogador j) {
+		this.proprietario = j;
+	}
+	
 	public boolean isStatus() {
 		return status;
 	}
@@ -69,6 +80,34 @@ public class Companhia extends Posicao{
 	
 	public void setPreco(int preco) {
 		this.preco = preco;
+	}
+	
+	
+	/**
+	 * Este método retira o valor do multiplicador do saldo do jogador
+	 * 
+	 * @param jogadorAtual
+	 *            Jogador da rodada
+	 * @param posicao
+	 *            Companhia que ele se encontra
+	 * @param dado1
+	 *            Resultado do primeiro dado
+	 * @param dado2
+	 *            Resultado do segundo dado            
+	 * @see Jogador
+	 * @see Posicao
+	 */
+	public void pagandoAluguelOuMultiplicador(Jogador jogadorAtual, Posicao posicao, int dado1, int dado2) {
+		
+		int multiplicadorASePagar = (dado1 + dado2) * posicao.getMultiplicador();
+		
+		Jogador dono = posicao.getProprietario();
+		dono.setDinheiro(dono.getDinheiro() + multiplicadorASePagar);
+
+		jogadorAtual.setDinheiro(jogadorAtual.getDinheiro() - multiplicadorASePagar);
+		System.out.println("Pagou R$" + multiplicadorASePagar + " de multiplicador a "+dono.getNome()+". Dinheiro do jogador: "
+				+ jogadorAtual.getDinheiro() + "\n");
+		
 	}
 	
 	
