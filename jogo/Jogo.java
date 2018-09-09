@@ -12,7 +12,6 @@ import posicoes.SorteOuReves;
 import tabuleiro.Dado;
 import tabuleiro.Jogador;
 import tabuleiro.Tabuleiro;
-import posicoes.Propriedade;
 
 /**
  * Este classe é responsável por criar os jogadores e fazer as jogadas
@@ -62,28 +61,49 @@ public class Jogo {
 		int contador = 0;
 		int dado1, dado2;
 		boolean loop = true;
+		Jogador jogadorAtual;
 
 		/**
 		 * Vai rodando
 		 */
 		while (this.jogadores.size() >= 2 || loop == true) {
-			Jogador jogadorAtual = jogadores.get(contador);
-			boolean jaSetouPosicaoAntes = false;
-
 			/**
 			 * Mostrando situação do jogador
 			 */
+			
+			if(jogadores.get(contador).isPrisioneiro()) {
+				Prisao p = new Prisao();
+				
+				System.out.println("\n"+jogadores.get(contador).getNome()+" está na prisão!");
+				System.out.print("Comandos disponívels: [Pagar] [Carta] [Jogar] [Sair] [Status] ");
+				String escolha = leitor.nextLine();
+				
+				contador = p.checandoLiberdade(escolha, jogadores.get(contador), d1, d2, contador);
+
+			}
+			
+			
+			try {
+				jogadorAtual = jogadores.get(contador);
+			} catch(Exception e ) {
+				contador = 0;
+				jogadorAtual = jogadores.get(contador);
+			}
+			
+			boolean jaSetouPosicaoAntes = false;
+			
 			System.out.println("\nVez de " + jogadorAtual.getNome() + "(" + jogadorAtual.getCor() + ")"
 					+ "\nVocê possui R$: " + jogadorAtual.getDinheiro());
 			System.out.println("Comandos disponívels: [Jogar] [Sair] [Status]");
 			System.out.print("Sua escolha: ");
 			String escolha = leitor.nextLine();
+			escolha = escolha.toLowerCase();
 
 			/**
 			 * Série de if/else para determinar qual comando o jogador escolheu e executá-la
 			 */
 
-			if (escolha.equals("sair") || escolha.equals("Sair")) {
+			if (escolha.equals("sair")) {
 				System.out.print("Tem certeza disso? (sim/nao) ");
 				String certeza = leitor.nextLine();
 				if (certeza.equals("sim")) {
@@ -94,11 +114,18 @@ public class Jogo {
 				}
 			}
 
-			else if (escolha.equals("jogar") || escolha.equals("Jogar")) {
+			else if (escolha.equals("jogar")) {
 				dado1 = d1.getDado();
 				dado2 = d2.getDado();
 				Posicao posicao;
+				
+				if(dado1 == dado2) {
+					jogadorAtual.setDadosIguais(jogadorAtual.getDadosIguais() + 1);
+				} else {
+					jogadorAtual.setDadosIguais(0);
+				}
 
+				
 				/**
 				 * Tratando o erro quando o jogador ultrapassa os limites do array
 				 */
@@ -125,7 +152,7 @@ public class Jogo {
 
 			}
 
-			else if (escolha.equals("status") || escolha.equals("Status")) {
+			else if (escolha.equals("status")) {
 
 				jogadorAtual.status(this.tabuleiro);
 
@@ -173,9 +200,14 @@ public class Jogo {
 	 *            Resultado do dado2
 	 */
 	public void determinandoTipoDePosicao(Posicao posicao, Jogador jogadorAtual, int dado1, int dado2) {
-		if (posicao instanceof Prisao || posicao instanceof SorteOuReves) {
+		if (posicao instanceof Prisao) {
 			posicao.getNomeDaPosicao();
 
+			((Prisao) posicao).caindoNaPrisao(jogadorAtual);
+		}
+		
+		else if (posicao instanceof SorteOuReves) {
+			posicao.getNomeDaPosicao();
 		}
 
 		else if (posicao instanceof Imposto) {
@@ -200,45 +232,14 @@ public class Jogo {
 		else {
 			posicao.getNomeDaPosicao();
 			if (posicao.isStatus() == false) {
-				pagandoAluguelOuMultiplicador(jogadorAtual, posicao, dado1, dado2);
+				posicao.pagandoAluguelOuMultiplicador(jogadorAtual, posicao, dado1, dado2);
+				
 			} else {
 				System.out.print("Você deseja comprar? (sim/nao) ");
 				String comprar = leitor.nextLine();
 				escolhaDeCompra(comprar, jogadorAtual, posicao);
+				
 			}
-		}
-	}
-
-	/**
-	 * Este método retira o valor do aluguel ou multiplicador do saldo do jogador
-	 * 
-	 * @param jogadorAtual
-	 *            Jogador da rodada
-	 * @param posicao
-	 *            Propriedade ou Companhia que ele se encontra
-	 * @param dado1
-	 *            Resultado do primeiro dado
-	 * @param dado2
-	 *            Resultado do segundo dado
-	 * @see Propriedade
-	 * @see Jogador
-	 * @see Posicao
-	 */
-	public void pagandoAluguelOuMultiplicador(Jogador jogadorAtual, Posicao posicao, int dado1, int dado2) {
-
-		if (posicao instanceof Propriedade) {
-
-			jogadorAtual.setDinheiro(jogadorAtual.getDinheiro() - posicao.getAluguel());
-			System.out.println("Pagou R$" + posicao.getAluguel() + " de aluguel. Dinheiro do jogador: "
-					+ jogadorAtual.getDinheiro() + "\n");
-		}
-
-		else {
-			int multiplicadorASePagar = (dado1 + dado2) * posicao.getMultiplicador();
-
-			jogadorAtual.setDinheiro(jogadorAtual.getDinheiro() - multiplicadorASePagar);
-			System.out.println("Pagou R$" + multiplicadorASePagar + " de multiplicador. Dinheiro do jogador: "
-					+ jogadorAtual.getDinheiro() + "\n");
 		}
 	}
 

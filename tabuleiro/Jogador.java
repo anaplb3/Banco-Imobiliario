@@ -15,6 +15,10 @@ public class Jogador {
 	private int posicao;
 	private double dinheiro;
 	ArrayList<Posicao> propriedades;
+	private boolean prisioneiro;
+	private int dadosIguais;
+	private int cartaoLiberdade;
+	
 
 	/**
 	 * Esse construtor está setando as informações do jogador
@@ -43,7 +47,30 @@ public class Jogador {
 		this.propriedades.add(p);
 	}
 	
+	public int getCartaoLiberdade() {
+		return cartaoLiberdade;
+	}
+
+	public void setCartaoLiberdade(int cartaoLiberdade) {
+		this.cartaoLiberdade = cartaoLiberdade;
+	}
 	
+	public boolean isPrisioneiro() {
+		return prisioneiro;
+	}
+
+	public void setPrisioneiro(boolean prisioneiro) {
+		this.prisioneiro = prisioneiro;
+	}
+
+	public int getDadosIguais() {
+		return dadosIguais;
+	}
+
+	public void setDadosIguais(int dadosIguais) {
+		this.dadosIguais = dadosIguais;
+	}
+
 	public ArrayList<Posicao> getPropriedades() {
 		return propriedades;
 	}
@@ -95,7 +122,7 @@ public class Jogador {
 
 		if (lugar == null) {
 			System.out.println(this.nome + " - " + this.cor);
-			System.out.println("Você está na casa " + this.posicao + ", no ponto de partida.");
+			System.out.println("Você está " + this.posicao + ", no ponto de partida.");
 			System.out.println("Você possui R$" + this.dinheiro);
 
 		} else {

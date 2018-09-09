@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import jogo.Jogo;
 import posicoes.Companhia;
+import posicoes.Posicao;
 import posicoes.Propriedade;
 import tabuleiro.Dado;
 import tabuleiro.Jogador;
@@ -17,8 +18,8 @@ public class JogoTest {
 	Jogo jogo;
 	Jogador j1;
 	Dado d1, d2;
-	Propriedade p;
-	Companhia c;
+	Posicao p1;
+	Posicao p2;
 
 	@Before
 	public void setUp() {
@@ -26,22 +27,20 @@ public class JogoTest {
 		j1 = new Jogador("Ana", "preto");
 		d1 = new Dado();
 		d2 = new Dado();
-		p = new Propriedade("lugar aleatorio", 200, 2);
-		c = new Companhia("place aleatorio", 150, 40);
+		p1 = new Propriedade("lugar aleatorio", 200, 2);
+		p2 = new Companhia("place aleatorio", 150, 40);
 	}
 
-	@Test
-	public void testPagandoAluguelOuMultiplicador() {
-		assertTrue(1498.00 == j1.getDinheiro() - p.getAluguel());
-		j1.setDinheiro(1500);
-		assertTrue(1460.00 == j1.getDinheiro() - c.getMultiplicador());
-	}
 
 	@Test
 	public void testEscolhaDeCompra() {
-		assertTrue(1300.00 == j1.getDinheiro() - p.getPreco());
+		jogo.escolhaDeCompra("sim", j1, p1);
+		assertTrue(1300.00 == j1.getDinheiro());
+		
 		j1.setDinheiro(1500);
-		assertTrue(1350.00 == j1.getDinheiro() - c.getPreco());
+		
+		jogo.escolhaDeCompra("sim", j1, p2);
+		assertTrue(1350.00 == j1.getDinheiro());
 	}
 
 	@Test
