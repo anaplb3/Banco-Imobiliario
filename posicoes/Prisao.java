@@ -1,13 +1,25 @@
 package posicoes;
 
 
+import java.util.ArrayList;
+import java.util.Scanner;
+
+import jogo.Jogo;
 import tabuleiro.Dado;
 import tabuleiro.Jogador;
+
 
 /**
 * Essa classe representa a posição Prisão do tabuleiro do jogo
 */
 public class Prisao extends Posicao{
+		Scanner leitor;
+		
+		public Prisao() {
+			
+			leitor = new Scanner(System.in);
+			
+		}
 		
 		public void getNomeDaPosicao() {
 			System.out.println("Você está na prisão!");
@@ -28,7 +40,7 @@ public class Prisao extends Posicao{
 			
 		}
 		
-		public int checandoLiberdade(String escolha, Jogador j, Dado d1, Dado d2, int contador) {
+		public int checandoLiberdade(Jogo jogo, ArrayList<Posicao> tab, String escolha, Jogador j, Dado d1, Dado d2, int contador) {
 			
 			if(escolha.toLowerCase().equals("carta")) {
 				
@@ -65,6 +77,16 @@ public class Prisao extends Posicao{
 					System.out.println("Você não conseguiu sair da prisão.");
 					contador += 1;
 				}
+				
+			} else if(escolha.equals("status")) {
+				
+				j.status(tab);
+				
+			} else if(escolha.equals("sair")) {
+				
+				System.out.print("Tem certeza? ");
+				String certeza = leitor.nextLine();
+				jogo.saindoDoJogo(certeza, j, contador);
 				
 			}
 			
