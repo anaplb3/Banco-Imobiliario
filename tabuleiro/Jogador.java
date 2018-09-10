@@ -45,6 +45,7 @@ public class Jogador {
 	 */
 	public void adicionandoPropriedade(Posicao p) {
 		this.propriedades.add(p);
+		p.setProprietario(this);
 	}
 	
 	public int getCartaoLiberdade() {
@@ -119,18 +120,20 @@ public class Jogador {
 	 */
 	public void status(ArrayList<Posicao> tabuleiro) {
 		Posicao lugar = tabuleiro.get(this.posicao);
-
+		
+		System.out.println(this.nome + " - " + this.cor);
 		if (lugar == null) {
-			System.out.println(this.nome + " - " + this.cor);
+			
 			System.out.println("Você está " + this.posicao + ", no ponto de partida.");
-			System.out.println("Você possui R$" + this.dinheiro);
 
 		} else {
-			System.out.println(this.nome + " - " + this.cor);
+			
 			System.out.println("Você está na casa " + this.posicao + ", em " + lugar.getNome());
-			System.out.println("Você possui R$" + this.dinheiro);
 
 		}
+		System.out.println("Você possui R$" + this.dinheiro);
+		
+		
 		if (this.propriedades.size() > 0) {
 			System.out.println("Essas são suas propriedades: ");
 			for (Posicao prop : this.propriedades) {
@@ -149,6 +152,16 @@ public class Jogador {
 			System.out.println("Você ainda não tem propriedades!\n");
 		}
 
+	}
+	
+	public void saindo() {
+		
+		for(Posicao p: this.propriedades) {
+			
+			p.setStatus(false);
+			
+		}
+		
 	}
 
 }
