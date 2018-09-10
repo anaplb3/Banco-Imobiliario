@@ -66,32 +66,32 @@ public class Jogo {
 		/**
 		 * Vai rodando
 		 */
-		while (this.jogadores.size() >= 2 || loop == true) {
+		while (this.jogadores.size() >= 2 && loop == true) {
 			/**
 			 * Mostrando situação do jogador
 			 */
 			
-			if(jogadores.get(contador).isPrisioneiro()) {
+			if (jogadores.get(contador).isPrisioneiro()) {
 				Prisao p = new Prisao();
-				
-				System.out.println("\n"+jogadores.get(contador).getNome()+" está na prisão!");
+
+				System.out.println("\n" + jogadores.get(contador).getNome() + " está na prisão!");
 				System.out.print("Comandos disponívels: [Pagar] [Carta] [Jogar] [Sair] [Status] ");
 				String escolha = leitor.nextLine();
-				
-				contador = p.checandoLiberdade(escolha, jogadores.get(contador), d1, d2, contador);
+
+				contador = p.checandoLiberdade(this, this.tabuleiro, escolha, jogadores.get(contador), d1, d2, contador);
+				continue;
 
 			}
-			
-			
+
 			try {
 				jogadorAtual = jogadores.get(contador);
-			} catch(Exception e ) {
+			} catch (Exception e) {
 				contador = 0;
 				jogadorAtual = jogadores.get(contador);
 			}
-			
+
 			boolean jaSetouPosicaoAntes = false;
-			
+
 			System.out.println("\nVez de " + jogadorAtual.getNome() + "(" + jogadorAtual.getCor() + ")"
 					+ "\nVocê possui R$: " + jogadorAtual.getDinheiro());
 			System.out.println("Comandos disponívels: [Jogar] [Sair] [Status]");
@@ -106,26 +106,35 @@ public class Jogo {
 			if (escolha.equals("sair")) {
 				System.out.print("Tem certeza disso? (sim/nao) ");
 				String certeza = leitor.nextLine();
-				if (certeza.equals("sim")) {
-					leitor.close();
-					break;
-				} else {
-					contador -= 1;
-				}
+
+				contador = saindoDoJogo(certeza, jogadorAtual, contador);
 			}
 
 			else if (escolha.equals("jogar")) {
 				dado1 = d1.getDado();
 				dado2 = d2.getDado();
 				Posicao posicao;
-				
-				if(dado1 == dado2) {
+
+				// Verificando a possibilidade do jogador ir a prisão por tirar dados iguais 3
+				// vezes seguidas
+				if (dado1 == dado2) {
+
 					jogadorAtual.setDadosIguais(jogadorAtual.getDadosIguais() + 1);
+
+					if (jogadorAtual.getDadosIguais() == 3) {
+
+						System.out.println("Você tirou dados iguais 3 vezes! Vá para a prisão.");
+						jogadorAtual.setPrisioneiro(true);
+						continue;
+
+					}
+
 				} else {
+					
 					jogadorAtual.setDadosIguais(0);
+					
 				}
 
-				
 				/**
 				 * Tratando o erro quando o jogador ultrapassa os limites do array
 				 */
@@ -160,6 +169,7 @@ public class Jogo {
 			}
 
 			else {
+				
 				System.out.println("Comando não é válido. Tente de novo!");
 				contador -= 1;
 			}
@@ -167,6 +177,9 @@ public class Jogo {
 			contador = ordenandoJogadores(contador);
 
 		}
+
+		System.out.println("\nJogo finalizado. Obrigada por jogar!");
+		leitor.close();
 	}
 
 	/**
@@ -205,7 +218,7 @@ public class Jogo {
 
 			((Prisao) posicao).caindoNaPrisao(jogadorAtual);
 		}
-		
+
 		else if (posicao instanceof SorteOuReves) {
 			posicao.getNomeDaPosicao();
 		}
@@ -233,12 +246,13 @@ public class Jogo {
 			posicao.getNomeDaPosicao();
 			if (posicao.isStatus() == false) {
 				posicao.pagandoAluguelOuMultiplicador(jogadorAtual, posicao, dado1, dado2);
-				
+
 			} else {
+				System.out.println("Preço: "+posicao.getPreco());
 				System.out.print("Você deseja comprar? (sim/nao) ");
 				String comprar = leitor.nextLine();
 				escolhaDeCompra(comprar, jogadorAtual, posicao);
-				
+
 			}
 		}
 	}
@@ -258,12 +272,17 @@ public class Jogo {
 	 */
 	public void escolhaDeCompra(String comprar, Jogador jogadorAtual, Posicao posicao) {
 		if (comprar.equals("sim") || comprar.equals("Sim")) {
+			
 			jogadorAtual.setDinheiro(jogadorAtual.getDinheiro() - posicao.getPreco());
 			jogadorAtual.adicionandoPropriedade(posicao);
+			
 			System.out.println("Comprou esse domínio. Dinheiro do jogador: " + jogadorAtual.getDinheiro() + "\n");
 			posicao.setStatus(false);
+			
 		} else {
+			
 			System.out.println("Você não comprou esta propriedade.");
+			
 		}
 	}
 
@@ -374,6 +393,22 @@ public class Jogo {
 			Jogador j = new Jogador(nome, cor);
 			this.jogadores.add(j);
 		}
+	}
+	
+	public int saindoDoJogo(String escolha, Jogador jogadorAtual, int contador) {
+		
+		if (escolha.equals("sim")) {
+			
+			jogadorAtual.saindo();
+			this.jogadores.remove(jogadorAtual);
+
+		} else {
+
+			contador -= 1;
+
+		}
+		
+		return contador;
 	}
 
 }
