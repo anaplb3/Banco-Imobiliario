@@ -34,18 +34,18 @@ public class PrisaoTest {
 		
 		//Testando carta liberdade
 		j1.setCartaoLiberdade(1);
-		prisao.checandoLiberdade("carta", j1, d1, d2, 0);
+		prisao.checandoLiberdade(null, null, "carta", j1, d1, d2, 0);
 		assertEquals(0, j1.getCartaoLiberdade());
 		assertFalse(j1.isPrisioneiro());
 		
 		j1.setPrisioneiro(true);
-		prisao.checandoLiberdade("carta", j1, d1, d2, 0);
+		prisao.checandoLiberdade(null, null, "carta", j1, d1, d2, 0);
 		assertTrue(j1.isPrisioneiro());
 		
 		
 		//Testando pagamento
 		j1.setDinheiro(100);
-		prisao.checandoLiberdade("pagar", j1, d1, d2, 0);
+		prisao.checandoLiberdade(null, null, "pagar", j1, d1, d2, 0);
 		assertEquals(50, j1.getDinheiro(), 0);
 		assertFalse(j1.isPrisioneiro());
 		
