@@ -33,9 +33,9 @@ public class PrisaoTest {
 	public void checandoLiberdadeTest() {
 		
 		//Testando carta liberdade
-		j1.setCartaoLiberdade(1);
+		j1.setCartaoLiberdade(true);
 		prisao.checandoLiberdade(null, null, "carta", j1, d1, d2, 0);
-		assertEquals(0, j1.getCartaoLiberdade());
+		assertFalse(j1.isCartaoLiberdade());
 		assertFalse(j1.isPrisioneiro());
 		
 		j1.setPrisioneiro(true);

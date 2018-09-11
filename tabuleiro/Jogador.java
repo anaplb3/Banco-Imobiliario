@@ -16,8 +16,9 @@ public class Jogador {
 	private double dinheiro;
 	ArrayList<Posicao> propriedades;
 	private boolean prisioneiro;
+	private boolean prisioneiroVisitante;
 	private int dadosIguais;
-	private int cartaoLiberdade;
+	private boolean cartaoLiberdade;
 	
 
 	/**
@@ -34,6 +35,7 @@ public class Jogador {
 		this.posicao = 0;
 		this.dinheiro = 1500;
 		this.propriedades = new ArrayList<>();
+		this.prisioneiroVisitante = false;
 	}
 
 	/**
@@ -48,11 +50,19 @@ public class Jogador {
 		p.setProprietario(this);
 	}
 	
-	public int getCartaoLiberdade() {
+	public boolean isPrisioneiroVisitante() {
+		return prisioneiroVisitante;
+	}
+
+	public void setPrisioneiroVisitante(boolean prisioneiroVisitante) {
+		this.prisioneiroVisitante = prisioneiroVisitante;
+	}
+
+	public boolean isCartaoLiberdade() {
 		return cartaoLiberdade;
 	}
 
-	public void setCartaoLiberdade(int cartaoLiberdade) {
+	public void setCartaoLiberdade(boolean cartaoLiberdade) {
 		this.cartaoLiberdade = cartaoLiberdade;
 	}
 	

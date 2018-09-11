@@ -29,6 +29,7 @@ public class Jogo {
 	private ArrayList<Posicao> tabuleiro;
 	private Dado d1, d2;
 	private int qtdJogadores;
+	private Prisao prisao;
 
 	/**
 	 * Construtor da classe Jogo, que inicia os Dados, o Tabuleiro o Scanner e o
@@ -42,6 +43,7 @@ public class Jogo {
 		this.d2 = new Dado();
 		this.tab = new Tabuleiro();
 		this.tabuleiro = tab.criandoTab();
+		this.prisao = new Prisao();
 	}
 
 	/**
@@ -62,6 +64,7 @@ public class Jogo {
 		int dado1, dado2;
 		boolean loop = true;
 		Jogador jogadorAtual;
+		boolean jaSetouPosicaoAntes;
 
 		/**
 		 * Vai rodando
@@ -71,18 +74,38 @@ public class Jogo {
 			 * Mostrando situação do jogador
 			 */
 			
+			//Como o visitante pula a rodada, pode dar indexOutOfBounds
+			try {
+				jogadorAtual = jogadores.get(contador);
+			} catch (Exception e) {
+				contador = 0;
+				jogadorAtual = jogadores.get(contador);
+			}
+			
+			// Testa se o jogador é prisioneiro visitante
+			if(jogadores.get(contador).isPrisioneiroVisitante()) {
+				
+				System.out.println("\n"+jogadores.get(contador).getNome()+",  você está preso por uma rodada!");
+				jogadores.get(contador).setPrisioneiroVisitante(false);
+				jaSetouPosicaoAntes = true;
+				contador += 1;
+				continue;
+				
+			}
+			
+			// Testa se o jogador é prisioneiro
 			if (jogadores.get(contador).isPrisioneiro()) {
-				Prisao p = new Prisao();
 
 				System.out.println("\n" + jogadores.get(contador).getNome() + " está na prisão!");
 				System.out.print("Comandos disponívels: [Pagar] [Carta] [Jogar] [Sair] [Status] ");
 				String escolha = leitor.nextLine();
 
-				contador = p.checandoLiberdade(this, this.tabuleiro, escolha, jogadores.get(contador), d1, d2, contador);
+				contador = prisao.checandoLiberdade(this, this.tabuleiro, escolha, jogadores.get(contador), d1, d2, contador);
 				continue;
 
 			}
-
+			
+			// Prisioneiro também incrementa o contador do jogador, podendo dar indexOutOfBounds
 			try {
 				jogadorAtual = jogadores.get(contador);
 			} catch (Exception e) {
@@ -90,7 +113,7 @@ public class Jogo {
 				jogadorAtual = jogadores.get(contador);
 			}
 
-			boolean jaSetouPosicaoAntes = false;
+			jaSetouPosicaoAntes = false;
 
 			System.out.println("\nVez de " + jogadorAtual.getNome() + "(" + jogadorAtual.getCor() + ")"
 					+ "\nVocê possui R$: " + jogadorAtual.getDinheiro());
@@ -125,6 +148,8 @@ public class Jogo {
 
 						System.out.println("Você tirou dados iguais 3 vezes! Vá para a prisão.");
 						jogadorAtual.setPrisioneiro(true);
+						jogadorAtual.setPosicao(30);
+						jaSetouPosicaoAntes = true;
 						continue;
 
 					}
@@ -215,8 +240,19 @@ public class Jogo {
 	public void determinandoTipoDePosicao(Posicao posicao, Jogador jogadorAtual, int dado1, int dado2) {
 		if (posicao instanceof Prisao) {
 			posicao.getNomeDaPosicao();
+			prisao = (Prisao) posicao;
+			
+			if(prisao.getTipo().equals("prisão")) {
+				
+				prisao.caindoNaPrisao(jogadorAtual);
+				
+			} else {
+				
+				System.out.println("Você é visitante da prisão. Fique 1 rodada sem jogar!");
+				jogadorAtual.setPrisioneiroVisitante(true);
+			}
+			
 
-			((Prisao) posicao).caindoNaPrisao(jogadorAtual);
 		}
 
 		else if (posicao instanceof SorteOuReves) {
@@ -395,6 +431,11 @@ public class Jogo {
 		}
 	}
 	
+	/**
+	 * Esse método retira o jogador do jogo
+	 * 
+	 * @see Jogador
+	 */
 	public int saindoDoJogo(String escolha, Jogador jogadorAtual, int contador) {
 		
 		if (escolha.equals("sim")) {

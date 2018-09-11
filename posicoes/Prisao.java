@@ -14,13 +14,23 @@ import tabuleiro.Jogador;
 */
 public class Prisao extends Posicao{
 		Scanner leitor;
+		String tipo;
 		
 		public Prisao() {
 			
 			leitor = new Scanner(System.in);
+			this.tipo = "";
 			
 		}
-		
+			
+		public String getTipo() {
+			return tipo;
+		}
+
+		public void setTipo(String tipo) {
+			this.tipo = tipo;
+		}
+
 		public void getNomeDaPosicao() {
 			System.out.println("Você está na prisão!");
 		}
@@ -34,7 +44,6 @@ public class Prisao extends Posicao{
 			if(j.isPrisioneiro() == false) {
 				
 				j.setPrisioneiro(true);
-				j.setPosicao(10);
 				
 			} 
 			
@@ -44,10 +53,10 @@ public class Prisao extends Posicao{
 			
 			if(escolha.toLowerCase().equals("carta")) {
 				
-				if(j.getCartaoLiberdade() > 0) {
+				if(j.isCartaoLiberdade()) {
 					
 					System.out.println("Você usou uma carta de liberdade para sair da prisão.");
-					j.setCartaoLiberdade(j.getCartaoLiberdade() - 1);
+					j.setCartaoLiberdade(false);
 					j.setPrisioneiro(false);
 					
 				} else {
@@ -69,12 +78,12 @@ public class Prisao extends Posicao{
 				
 				if(dado1 == dado2) {
 					
-					System.out.println("Você conseguiu sair da prisão!");
+					System.out.println("Você tirou "+dado1+","+dado2+" e conseguiu sair da prisão!");
 					j.setPrisioneiro(false);
 					
 				} else {
 					
-					System.out.println("Você não conseguiu sair da prisão.");
+					System.out.println("Você tirou "+dado1+","+dado2+" e não conseguiu sair da prisão.");
 					contador += 1;
 				}
 				
