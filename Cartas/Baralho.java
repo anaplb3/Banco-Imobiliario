@@ -1,6 +1,7 @@
 package Cartas;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Stack;
 
 public class Baralho {
@@ -44,6 +45,7 @@ public class Baralho {
 		
 			
 		}
+		Collections.shuffle(baralho);
 		return baralho;
 		
 		
@@ -52,12 +54,24 @@ public class Baralho {
 	public CartaSorte puxarCarta() {
 		Stack<CartaSorte> baralho = criarBaralho();
 		CartaSorte carta = baralho.pop();
-		
-		this.baralho.add(carta);
+		baralho.remove(carta);
+		recolocandoNaPilha(carta);
 		
 		return carta;
 	}
 	
+	public void recolocandoNaPilha(CartaSorte carta) {
+		
+		Stack<CartaSorte> auxiliar = new Stack<CartaSorte>();
+		auxiliar.add(carta);
+		
+		for(int i = 0; i < this.baralho.size();i++) {
+			auxiliar.add(this.baralho.get(i+1));
+		}
+		this.baralho = auxiliar;
+		
+	}
+		
 	
 
 }
