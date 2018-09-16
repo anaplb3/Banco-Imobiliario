@@ -30,6 +30,8 @@ public class Jogo {
 	private Dado d1, d2;
 	private int qtdJogadores;
 	private Prisao prisao;
+	private SorteOuReves sorte;
+	private int indiceDoJogador;
 
 	/**
 	 * Construtor da classe Jogo, que inicia os Dados, o Tabuleiro o Scanner e o
@@ -44,6 +46,149 @@ public class Jogo {
 		this.tab = new Tabuleiro();
 		this.tabuleiro = tab.criandoTab();
 		this.prisao = new Prisao();
+		this.sorte = new SorteOuReves();
+		this.indiceDoJogador = 0;
+	}
+
+	public void setJogadores(ArrayList<Jogador> jogadores) {
+		this.jogadores = jogadores;
+	}
+
+	/**
+	 * Verifica se o jogador é um prisioneiro visitante
+	 * 
+	 * @param jogadorAtual
+	 *            Jogador da rodada
+	 * @return um booleano que retorna true caso ele seja, indicando que precisa
+	 *         passar a rodada pra o próximo jogador
+	 */
+	public boolean verificandoSePrisioneiroVisitante(Jogador jogadorAtual) {
+		boolean check = false;
+
+		if (jogadorAtual.isPrisioneiroVisitante()) {
+
+			System.out.println("\n" + jogadorAtual.getNome() + ",  você está preso por uma rodada!");
+			jogadorAtual.setPrisioneiroVisitante(false);
+			this.indiceDoJogador += 1;
+			check = true;
+		}
+
+		return check;
+	}
+
+	/**
+	 * Verifica se o jogador tirou dados iguais por 3 vezes seguidas.
+	 * 
+	 * @param dado1
+	 *            Resultado do primeiro dado
+	 * @param dado2
+	 *            Resultado do segundo dado
+	 * @param jogadorAtual
+	 *            Jogador da rodada
+	 * @return Retorna um true caso tire dados repetidos 3 vezes seguidas ou false
+	 *         se for o contrário
+	 * @see Jogador
+	 */
+	public boolean verificandoDadosIguais(int dado1, int dado2, Jogador jogadorAtual) {
+		boolean checando = false;
+
+		if (dado1 == dado2) {
+			jogadorAtual.setDadosIguais(jogadorAtual.getDadosIguais() + 1);
+
+			if (jogadorAtual.getDadosIguais() == 3) {
+				System.out.println("Você tirou dados iguais 3 vezes! Vá para a prisão.");
+				jogadorAtual.setPrisioneiro(true);
+				jogadorAtual.setPosicao(30);
+				jogadorAtual.setDadosIguais(0);
+				this.indiceDoJogador += 1;
+				checando = true;
+
+			}
+
+		} else {
+			jogadorAtual.setDadosIguais(0);
+
+		}
+
+		return checando;
+
+	}
+
+	/**
+	 * Método responsável por executar a jogada do jogador
+	 * 
+	 * @param dado1
+	 *            Resultado do primeiro dado
+	 * @param dado2
+	 *            resultado do segundo dado
+	 * @param tabuleiro
+	 *            tabuleiro do jogo
+	 * @param jogadorAtual
+	 *            jogador da rodada
+	 */
+	public void jogada(int dado1, int dado2, ArrayList<Posicao> tabuleiro, Jogador jogadorAtual) {
+		Posicao p;
+		p = pegandoPosicaoNoTabuleiro(dado1, dado2, tabuleiro, jogadorAtual);
+
+		System.out.println(jogadorAtual.getNome() + " tirou " + dado1 + "," + dado2);
+
+		determinandoTipoDePosicao(p, jogadorAtual, dado1, dado2);
+		this.indiceDoJogador += 1;
+	}
+
+	/**
+	 * Tratando o erro quando o jogador ultrapassa os limites do array
+	 * 
+	 * @param dado1
+	 *            resultado do primeiro dado
+	 * @param dado2
+	 *            resultado do segundo dado
+	 * @param tabuleiro
+	 *            tabuleiro do jogo
+	 * @param jogadorAtual
+	 *            jogador da rodada
+	 * @return A posição em que o jogador caiu
+	 */
+	public Posicao pegandoPosicaoNoTabuleiro(int dado1, int dado2, ArrayList<Posicao> tabuleiro, Jogador jogadorAtual) {
+		Posicao p;
+
+		try {
+			p = tabuleiro.get(dado1 + dado2 + jogadorAtual.getPosicao());
+		} catch (IndexOutOfBoundsException erro) {
+			System.out.println("Você deu uma volta no tabuleiro! Ganhou R$200!");
+			jogadorAtual.setDinheiro(jogadorAtual.getDinheiro() + 200);
+
+			int faltaAndar = (jogadorAtual.getPosicao() + dado1 + dado2) - 40;
+
+			p = tabuleiro.get(faltaAndar);
+			jogadorAtual.setPosicao(faltaAndar);
+		}
+
+		return p;
+	}
+
+	/**
+	 * Mostrando as opções de jogada de cada jogador
+	 * 
+	 * @param jogadorAtual
+	 *            jogador da rodada
+	 * @return A escolha de jogada do jogador
+	 */
+	public String menu(Jogador jogadorAtual) {
+		String menu = "Comandos disponívels: [Jogar] [Sair] [Status]";
+
+		if (jogadorAtual.isPrisioneiro()) {
+			menu = "Comandos disponívels: [Pagar] [Carta] [Jogar] [Sair] [Status]";
+		}
+
+		System.out.println("\nVez de " + jogadorAtual.getNome() + "(" + jogadorAtual.getCor() + ")"
+				+ "\nVocê possui R$: " + jogadorAtual.getDinheiro());
+		System.out.println(menu);
+		System.out.print("Sua escolha: ");
+		String escolha = leitor.nextLine();
+		escolha = escolha.toLowerCase();
+
+		return escolha;
 	}
 
 	/**
@@ -58,69 +203,30 @@ public class Jogo {
 	 * @see ParadaLivre
 	 */
 	public void fazendoJogada() {
-
 		System.out.println("O jogo vai começar. Divirta-se!");
-		int contador = 0;
 		int dado1, dado2;
 		boolean loop = true;
 		Jogador jogadorAtual;
-		boolean jaSetouPosicaoAntes;
 
 		/**
-		 * Vai rodando
+		 * Vai rodando o jogo enquanto houver jogadores e ninguém houver ganhado ainda
 		 */
 		while (this.jogadores.size() >= 2 && loop == true) {
-			/**
-			 * Mostrando situação do jogador
-			 */
-			
-			//Como o visitante pula a rodada, pode dar indexOutOfBounds
-			try {
-				jogadorAtual = jogadores.get(contador);
-			} catch (Exception e) {
-				contador = 0;
-				jogadorAtual = jogadores.get(contador);
-			}
-			
-			// Testa se o jogador é prisioneiro visitante
-			if(jogadores.get(contador).isPrisioneiroVisitante()) {
-				
-				System.out.println("\n"+jogadores.get(contador).getNome()+",  você está preso por uma rodada!");
-				jogadores.get(contador).setPrisioneiroVisitante(false);
-				jaSetouPosicaoAntes = true;
-				contador += 1;
+			jogadorAtual = jogadores.get(indiceDoJogador);
+
+			boolean prisioneiroVisitante = verificandoSePrisioneiroVisitante(jogadorAtual);
+			if (prisioneiroVisitante) {
 				continue;
-				
 			}
-			
-			// Testa se o jogador é prisioneiro
-			if (jogadores.get(contador).isPrisioneiro()) {
 
-				System.out.println("\n" + jogadores.get(contador).getNome() + " está na prisão!");
-				System.out.print("Comandos disponívels: [Pagar] [Carta] [Jogar] [Sair] [Status] ");
-				String escolha = leitor.nextLine();
+			String escolha = menu(jogadorAtual);
 
-				contador = prisao.checandoLiberdade(this, this.tabuleiro, escolha, jogadores.get(contador), d1, d2, contador);
+			// Verifica se o jogador é prisioneiro e caso sim, executa a sua escolha
+			if (jogadorAtual.isPrisioneiro()) {
+				this.indiceDoJogador = prisao.checandoLiberdade(this, this.tabuleiro, escolha, jogadorAtual, d1, d2,
+						this.indiceDoJogador);
 				continue;
-
 			}
-			
-			// Prisioneiro também incrementa o contador do jogador, podendo dar indexOutOfBounds
-			try {
-				jogadorAtual = jogadores.get(contador);
-			} catch (Exception e) {
-				contador = 0;
-				jogadorAtual = jogadores.get(contador);
-			}
-
-			jaSetouPosicaoAntes = false;
-
-			System.out.println("\nVez de " + jogadorAtual.getNome() + "(" + jogadorAtual.getCor() + ")"
-					+ "\nVocê possui R$: " + jogadorAtual.getDinheiro());
-			System.out.println("Comandos disponívels: [Jogar] [Sair] [Status]");
-			System.out.print("Sua escolha: ");
-			String escolha = leitor.nextLine();
-			escolha = escolha.toLowerCase();
 
 			/**
 			 * Série de if/else para determinar qual comando o jogador escolheu e executá-la
@@ -130,77 +236,36 @@ public class Jogo {
 				System.out.print("Tem certeza disso? (sim/nao) ");
 				String certeza = leitor.nextLine();
 
-				contador = saindoDoJogo(certeza, jogadorAtual, contador);
+				saindoDoJogo(certeza, jogadorAtual);
 			}
 
 			else if (escolha.equals("jogar")) {
 				dado1 = d1.getDado();
 				dado2 = d2.getDado();
-				Posicao posicao;
 
 				// Verificando a possibilidade do jogador ir a prisão por tirar dados iguais 3
 				// vezes seguidas
-				if (dado1 == dado2) {
 
-					jogadorAtual.setDadosIguais(jogadorAtual.getDadosIguais() + 1);
-
-					if (jogadorAtual.getDadosIguais() == 3) {
-
-						System.out.println("Você tirou dados iguais 3 vezes! Vá para a prisão.");
-						jogadorAtual.setPrisioneiro(true);
-						jogadorAtual.setPosicao(30);
-						jaSetouPosicaoAntes = true;
-						continue;
-
-					}
-
-				} else {
-					
-					jogadorAtual.setDadosIguais(0);
-					
+				boolean dadosIguais = verificandoDadosIguais(dado1, dado2, jogadorAtual);
+				if (dadosIguais) {
+					continue;
 				}
 
-				/**
-				 * Tratando o erro quando o jogador ultrapassa os limites do array
-				 */
-				try {
-					posicao = tabuleiro.get(dado1 + dado2 + jogadores.get(contador).getPosicao());
-				} catch (IndexOutOfBoundsException erro) {
-					jaSetouPosicaoAntes = true;
-					int faltaAndar = (jogadorAtual.getPosicao() + dado1 + dado2) - 40;
-					posicao = tabuleiro.get(faltaAndar);
-					jogadorAtual.setPosicao(faltaAndar);
-				}
+				jogada(dado1, dado2, tabuleiro, jogadorAtual);
 
-				System.out.println(jogadorAtual.getNome() + " tirou " + dado1 + "," + dado2);
-
-				determinandoTipoDePosicao(posicao, jogadorAtual, dado1, dado2);
-
-				/**
-				 * Setando posição do jogador depois que faz a jogada
-				 */
-				if (jaSetouPosicaoAntes == false) {
-					int posicaoAtual = jogadorAtual.getPosicao();
-					jogadorAtual.setPosicao(posicaoAtual + dado1 + dado2);
-				}
-
+				int posicaoAtual = jogadorAtual.getPosicao();
+				jogadorAtual.setPosicao(posicaoAtual + dado1 + dado2);
 			}
 
 			else if (escolha.equals("status")) {
-
 				jogadorAtual.status(this.tabuleiro);
-
-				contador -= 1;
 			}
 
 			else {
-				
 				System.out.println("Comando não é válido. Tente de novo!");
-				contador -= 1;
 			}
 
-			contador = ordenandoJogadores(contador);
-
+			ordenandoJogadores();
 		}
 
 		System.out.println("\nJogo finalizado. Obrigada por jogar!");
@@ -209,19 +274,9 @@ public class Jogo {
 
 	/**
 	 * Método que seta o índice do jogador da vez
-	 * 
-	 * @param contador
-	 *            É um indice para o array de jogadores
-	 * @return Retorna o indice do jogador da rodada
 	 */
-	public int ordenandoJogadores(int contador) {
-		if (contador == jogadores.size() - 1) {
-			contador = 0;
-		} else {
-			contador += 1;
-		}
-
-		return contador;
+	public void ordenandoJogadores() {
+		this.indiceDoJogador = this.indiceDoJogador % this.jogadores.size();
 	}
 
 	/**
@@ -241,28 +296,28 @@ public class Jogo {
 		if (posicao instanceof Prisao) {
 			posicao.getNomeDaPosicao();
 			prisao = (Prisao) posicao;
-			
-			if(prisao.getTipo().equals("prisão")) {
-				
+
+			if (prisao.getTipo().equals("prisão")) {
 				prisao.caindoNaPrisao(jogadorAtual);
-				
+
 			} else {
-				
 				System.out.println("Você é visitante da prisão. Fique 1 rodada sem jogar!");
 				jogadorAtual.setPrisioneiroVisitante(true);
 			}
-			
-
 		}
 
 		else if (posicao instanceof SorteOuReves) {
 			posicao.getNomeDaPosicao();
+
+			sorte = (SorteOuReves) posicao;
+
+			sorte.setJogadores(jogadores);
+			sorte.acoes(jogadorAtual, this, tabuleiro, dado1, dado2);
 		}
 
 		else if (posicao instanceof Imposto) {
 			posicao.getNomeDaPosicao();
 			posicao.alterandoSaldoDoJogador(jogadorAtual);
-
 		}
 
 		else if (posicao instanceof Lucros) {
@@ -284,7 +339,7 @@ public class Jogo {
 				posicao.pagandoAluguelOuMultiplicador(jogadorAtual, posicao, dado1, dado2);
 
 			} else {
-				System.out.println("Preço: "+posicao.getPreco());
+				System.out.println("Preço: " + posicao.getPreco());
 				System.out.print("Você deseja comprar? (sim/nao) ");
 				String comprar = leitor.nextLine();
 				escolhaDeCompra(comprar, jogadorAtual, posicao);
@@ -308,17 +363,15 @@ public class Jogo {
 	 */
 	public void escolhaDeCompra(String comprar, Jogador jogadorAtual, Posicao posicao) {
 		if (comprar.equals("sim") || comprar.equals("Sim")) {
-			
+
 			jogadorAtual.setDinheiro(jogadorAtual.getDinheiro() - posicao.getPreco());
 			jogadorAtual.adicionandoPropriedade(posicao);
-			
+
 			System.out.println("Comprou esse domínio. Dinheiro do jogador: " + jogadorAtual.getDinheiro() + "\n");
 			posicao.setStatus(false);
-			
 		} else {
-			
+
 			System.out.println("Você não comprou esta propriedade.");
-			
 		}
 	}
 
@@ -355,7 +408,6 @@ public class Jogo {
 		// Retira a cor do jogador da lista de cores
 		try {
 			for (int i = 0; i < list_cor.size(); i++) {
-
 				if (list_cor.get(i).equals(cor)) {
 					list_cor.remove(i);
 					return true;
@@ -430,26 +482,29 @@ public class Jogo {
 			this.jogadores.add(j);
 		}
 	}
-	
+
 	/**
 	 * Esse método retira o jogador do jogo
 	 * 
+	 * @param escolha
+	 *            string com a decisão do jogador
+	 * @param jogadorAtual
+	 *            jogador da rodada
 	 * @see Jogador
 	 */
-	public int saindoDoJogo(String escolha, Jogador jogadorAtual, int contador) {
-		
+	public void saindoDoJogo(String escolha, Jogador jogadorAtual) {
+
 		if (escolha.equals("sim")) {
-			
+
 			jogadorAtual.saindo();
 			this.jogadores.remove(jogadorAtual);
 
 		} else {
 
-			contador -= 1;
+			this.indiceDoJogador -= 1;
 
 		}
-		
-		return contador;
+
 	}
 
 }

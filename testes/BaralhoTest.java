@@ -7,36 +7,48 @@ import java.util.Stack;
 import org.junit.Before;
 import org.junit.Test;
 
-import Cartas.Baralho;
-import Cartas.CartaSorte;
+import cartas.Baralho;
+import cartas.Carta;
 
 public class BaralhoTest {
-	CartaSorte carta;
+	Carta carta;
 	Baralho b;
+	Stack<Carta> baralho;
 	
 	@Before
 	public void setUp() {
 		
-		carta = new CartaSorte();
+		carta = new Carta();
 		b = new Baralho();
+		baralho = b.criarBaralho();
 		
 	}
 
 	@Test
 	public void testCriarBaralho() {
+		Carta base = baralho.firstElement();
 		
-		Stack<CartaSorte> baralho = b.criarBaralho();
-		assertEquals("Sua empresa foi multada por poluir demais. Pague 200", baralho.get(0).getDescricao());
+		assertEquals(base.getDescricao(), baralho.get(0).getDescricao());
 		
 	}
 
+	//Testando se 
 	@Test
 	public void testPuxarCarta() {
-
-		CartaSorte c = b.puxarCarta();
-		assertEquals("Tirou primeiro lugar no torneio de golfe. Receba 100", c.getDescricao());
-		
+		Carta carta = baralho.peek();
+		Carta c = b.puxarCarta();
+		assertEquals(carta.getDescricao(), c.getDescricao());
 		
 	}
+	
+	@Test
+	public void testRecolocandoNaPilha() {
+		Carta c = b.puxarCarta();
+
+		baralho = b.recolocandoNaPilha(c);
+		assertEquals(c.getDescricao(), baralho.get(0).getDescricao());
+		
+	}
+	
 
 }

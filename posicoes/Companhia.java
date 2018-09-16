@@ -84,7 +84,7 @@ public class Companhia extends Posicao{
 	
 	
 	/**
-	 * Este método retira o valor do multiplicador do saldo do jogador
+	 * Este método retira o valor do multiplicador do saldo do jogador e paga ao dono da companhia
 	 * 
 	 * @param jogadorAtual
 	 *            Jogador da rodada
@@ -102,11 +102,19 @@ public class Companhia extends Posicao{
 		int multiplicadorASePagar = (dado1 + dado2) * posicao.getMultiplicador();
 		
 		Jogador dono = posicao.getProprietario();
-		dono.setDinheiro(dono.getDinheiro() + multiplicadorASePagar);
+		if(dono.equals(jogadorAtual)) {
+			
+			System.out.println("Esse dominío já é seu!");
+			
+		} else {
+			dono.setDinheiro(dono.getDinheiro() + multiplicadorASePagar);
 
-		jogadorAtual.setDinheiro(jogadorAtual.getDinheiro() - multiplicadorASePagar);
-		System.out.println("Pagou R$" + multiplicadorASePagar + " de multiplicador a "+dono.getNome()+". Dinheiro do jogador: "
+			jogadorAtual.setDinheiro(jogadorAtual.getDinheiro() - multiplicadorASePagar);
+			System.out.println("Pagou R$" + multiplicadorASePagar + " de multiplicador a "+dono.getNome()+". Dinheiro do jogador: "
 				+ jogadorAtual.getDinheiro() + "\n");
+		}
+		
+		
 		
 	}
 	

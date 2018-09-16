@@ -1,24 +1,31 @@
-package Cartas;
+package cartas;
 
 import java.util.ArrayList;
 
-public class CartaSorte implements Carta {
+
+/**
+ * Classe que dá forma as cartas de sorte ou revés do jogo.
+ */
+public class Carta {
 	
 	private String descricao;
 	private int valor;
 	private String tipo;
 	
-	public CartaSorte() {
+	public Carta() {
 		this.descricao = "";
 		this.valor = 0;
 		this.tipo = "";
 	}
 
-	
 	public String tipo() {
-		// TODO Auto-generated method stub
 		return this.tipo;
 	}
+	
+	/**
+	 * Coloca as descrições das cartas de sorte ou revés dentro de um array
+	 * @return Retorna um array com todas as descrições das cartas
+	 */
 	public ArrayList<String> descricoesDasCartas(){
 		ArrayList<String> descricoes  = new ArrayList<>();
 		
@@ -57,6 +64,10 @@ public class CartaSorte implements Carta {
 		return descricoes;
 	}
 	
+	/**
+	 *  Coloca todos os valores das cartas de sorte e revés dentro de um array
+	 *  @return Retorna um array com todos os valores
+	 */
 	public ArrayList<Integer> valoresDasCartas(){
 		
 		ArrayList<Integer> valores = new ArrayList<>();
@@ -97,39 +108,27 @@ public class CartaSorte implements Carta {
 		
 	}
 	
-
-
 	public String getDescricao() {
 		return this.descricao;
 	}
-
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
 
-
 	public int getValor() {
 		return this.valor;
 	}
-
 
 	public void setValor(int valor) {
 		this.valor = valor;
 	}
 
-
 	public String getTipo() {
 		return this.tipo;
 	}
 
-
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
-	
-
-	
-	
-
 }

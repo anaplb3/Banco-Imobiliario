@@ -245,7 +245,7 @@ public class Propriedade extends Posicao {
 	
 	
 	/**
-	 * Este método retira o valor do aluguel do saldo do jogador
+	 * Este método retira o valor do aluguel do saldo do jogador e paga ao dono da propriedade
 	 * 
 	 * @param jogadorAtual
 	 *            Jogador da rodada
@@ -261,11 +261,19 @@ public class Propriedade extends Posicao {
 	public void pagandoAluguelOuMultiplicador(Jogador jogadorAtual, Posicao posicao, int dado1, int dado2) {
 		
 		Jogador dono = posicao.getProprietario();
-		dono.setDinheiro(dono.getDinheiro() + posicao.getAluguel());
+		if(dono.equals(jogadorAtual)) {
+			
+			System.out.println("Esse domínio já é seu.");
+			
+		} else {
+			dono.setDinheiro(dono.getDinheiro() + posicao.getAluguel());
 		
-		jogadorAtual.setDinheiro(jogadorAtual.getDinheiro() - posicao.getAluguel());
-		System.out.println("Pagou R$" + posicao.getAluguel() + " de aluguel a "+dono.getNome()+". Dinheiro do jogador: "
+			jogadorAtual.setDinheiro(jogadorAtual.getDinheiro() - posicao.getAluguel());
+			System.out.println("Pagou R$" + posicao.getAluguel() + " de aluguel a "+dono.getNome()+". Dinheiro do jogador: "
 				+ jogadorAtual.getDinheiro() + "\n");
+		}
+		
+		
 		
 	}
 

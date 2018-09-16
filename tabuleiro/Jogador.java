@@ -123,7 +123,7 @@ public class Jogador {
 	}
 
 	/**
-	 * Esse método está criando a opção de Status do jogador
+	 * Esse método mostra os atributos do jogador
 	 * 
 	 * @param tabuleiro
 	 *            É um Array com todas as posições disponíveis no tabuleiro
@@ -164,6 +164,9 @@ public class Jogador {
 
 	}
 	
+	/**
+	 * Deixa os domínios do jogador disponível novamente
+	 */
 	public void saindo() {
 		
 		for(Posicao p: this.propriedades) {
