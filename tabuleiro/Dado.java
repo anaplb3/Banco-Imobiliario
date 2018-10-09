@@ -20,5 +20,6 @@ public class Dado {
 	public int getDado() {
 		return gerador.nextInt(6) + 1;
 	}
+	
 
 }

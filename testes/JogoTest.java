@@ -8,75 +8,93 @@ import org.junit.Before;
 import org.junit.Test;
 
 import jogo.Jogo;
-import posicoes.Companhia;
+import posicoes.Posicao;
 import posicoes.Propriedade;
-import tabuleiro.Dado;
 import tabuleiro.Jogador;
+import tabuleiro.Tabuleiro;
 
 public class JogoTest {
 	Jogo jogo;
-	Jogador j1;
-	Dado d1, d2;
-	Propriedade p;
-	Companhia c;
+	ArrayList<Posicao> tabuleiro;
+	ArrayList<Jogador> jogadores;
+	Jogador j1, j2;
+	int contador;
+	ArrayList<String> lista_de_cores;
 
 	@Before
-	public void setUp() {
+	public void setUp() throws Exception {
+		Tabuleiro tab = new Tabuleiro();
+		tabuleiro = tab.criandoTab();
+		
 		jogo = new Jogo();
-		j1 = new Jogador("Ana", "preto");
-		d1 = new Dado();
-		d2 = new Dado();
-		p = new Propriedade("lugar aleatorio", 200, 2);
-		c = new Companhia("place aleatorio", 150, 40);
+		contador = 0;
+		
+		j1 = new Jogador("ana", "preto");
+		j1.setDinheiro(200);
+		j2 = new Jogador("joao", "branco");
+		
+		lista_de_cores = jogo.carregandoCores();
+		
+		jogadores = new ArrayList<>();
+		jogadores.add(j1);
+		jogadores.add(j2);
+		
+		jogo.setJogadores(jogadores);
 	}
 
+
+
 	@Test
-	public void testPagandoAluguelOuMultiplicador() {
-		assertTrue(1498.00 == j1.getDinheiro() - p.getAluguel());
-		j1.setDinheiro(1500);
-		assertTrue(1460.00 == j1.getDinheiro() - c.getMultiplicador());
+	public void testPegandoPosicaoNoTabuleiro() {
+		j1.setPosicao(40);
+		
+		Posicao p = jogo.pegandoPosicaoNoTabuleiro(0, 1, tabuleiro, j1);
+		assertEquals("Leblon", p.getNome());
+		assertEquals(400, j1.getDinheiro(), 0);
+		
+		j1.setPosicao(0);
+		p = jogo.pegandoPosicaoNoTabuleiro(0, 1, tabuleiro, j1);
+		assertEquals("Leblon", p.getNome());
 	}
+
 
 	@Test
 	public void testEscolhaDeCompra() {
-		assertTrue(1300.00 == j1.getDinheiro() - p.getPreco());
-		j1.setDinheiro(1500);
-		assertTrue(1350.00 == j1.getDinheiro() - c.getPreco());
-	}
-
-	@Test
-	public void testCarregandoCores() {
-		ArrayList<String> cores = jogo.carregandoCores();
-		for (int i = 0; i < cores.size(); i++) {
-			if(i == 0) {
-				assertEquals("preto", cores.get(i));
-			} else if (i == 1) {
-				assertEquals("branco", cores.get(i));
-			} else if (i == 2) {
-				assertEquals("vermelho", cores.get(i));
-			} else if (i == 3) {
-				assertEquals("verde", cores.get(i));
-			} else if (i == 4) {
-				assertEquals("azul", cores.get(i));
-			} else if (i == 5) {
-				assertEquals("amarelo", cores.get(i));
-			} else if (i == 6) {
-				assertEquals("laranja", cores.get(i));
-			} else if (i == 7) {
-				assertEquals("rosa", cores.get(i));
-			}
-		}
+		Posicao p = new Propriedade("nome", 50, 50);
+		jogo.escolhaDeCompra("sim", j1, p);
+		assertEquals(150, j1.getDinheiro(), 0);
+		
+		j1.setDinheiro(200);
+		jogo.escolhaDeCompra("n", j1, p);
+		assertEquals(200, j1.getDinheiro(), 0);
 	}
 
 
 	@Test
-	public void testCarregandoJogadores() {
-		ArrayList<Jogador> jogadores = new ArrayList<>();
-		jogadores.add(j1);
-		for(Jogador j: jogadores) {
-			assertEquals("Ana", j.getNome());
-			assertEquals("preto", j.getCor());
-		}
+	public void testValidarCor() {
+		assertTrue(jogo.validarCor("preto", lista_de_cores));
+		assertFalse(jogo.validarCor("preto", lista_de_cores));
+		assertFalse(jogo.validarCor("marrom", lista_de_cores));
+	}
+
+	@Test
+	public void testSaindoDoJogo() {
+		jogo.saindoDoJogo("sim", j2);
+		assertFalse(jogadores.contains(j2));
+	}
+	
+	@Test
+	public void testVerificandoDadosIguais() {
+		j1.setDadosIguais(2);
+		assertTrue(jogo.verificandoDadosIguais(1, 1, j1));
+		
+	}
+	
+	@Test
+	public void testVerificandoSePrisioneiroVisitante() {
+		j1.setPrisioneiroVisitante(true);
+		assertTrue(jogo.verificandoSePrisioneiroVisitante(j1));
+		
 	}
 
 }

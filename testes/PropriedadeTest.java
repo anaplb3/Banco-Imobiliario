@@ -8,13 +8,18 @@ import org.junit.Before;
 import org.junit.Test;
 
 import posicoes.Propriedade;
+import tabuleiro.Jogador;
 
 public class PropriedadeTest {
 	Propriedade propriedade;
+	Jogador j1, j2;
+
 	
 	@Before
 	public void setUp() {
-		propriedade = new Propriedade();
+		propriedade = new Propriedade("lugar nenhum", 200, 14);
+		j1 = new Jogador("ana", "preto");
+		j2 = new Jogador("joao", "branco");
 	}
 
 	@Test
@@ -37,6 +42,20 @@ public class PropriedadeTest {
 			assertTrue(preco == precoProp);
 			assertTrue(rent == rentProp);
 		}
+	}
+	
+	@Test
+	public void pagandoAluguelOuMultiplicadorTest() {
+		j1.setDinheiro(100);
+		j2.setDinheiro(100);
+		propriedade.setProprietario(j1);
+		
+		propriedade.pagandoAluguelOuMultiplicador(j2, propriedade, 1, 2);
+		
+		assertEquals(114, j1.getDinheiro(), 0);
+		assertEquals(86, j2.getDinheiro(), 0);
+		
+		
 	}
 
 }

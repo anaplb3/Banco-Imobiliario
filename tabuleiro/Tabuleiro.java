@@ -29,13 +29,16 @@ public class Tabuleiro {
 
 	/**
 	 * Esse método adiciona os objetos componentes do tabuleiro no tabuleiro
-	 * @return Retorna um array com todas as posições dentro da lista, formando assim o tabuleiro
+	 * 
+	 * @return Retorna um array com todas as posições dentro da lista, formando
+	 *         assim o tabuleiro
 	 */
 
 	public ArrayList<Posicao> criandoTab() {
 		ArrayList<Posicao> tab = new ArrayList<>();
 		ArrayList<Propriedade> propriedades = prop.criandoPropriedades();
 		Prisao prisao = new Prisao();
+		Prisao prisaoVisitante = new Prisao();
 		SorteOuReves sorte = new SorteOuReves();
 		Lucros lucros = new Lucros();
 		Imposto imposto = new Imposto();
@@ -46,12 +49,24 @@ public class Tabuleiro {
 
 			if (i == 2 || i == 12 || i == 16 || i == 22 || i == 27 || i == 37) {
 				tab.add(sorte);
-			} else if (i == 10 || i == 30) {
+			} else if (i == 10) {
+				
+				prisao.setTipo("prisão");
 				tab.add(prisao);
+				
 			} else if (i == 18) {
+				
 				tab.add(lucros);
+				
 			} else if (i == 24) {
+				
 				tab.add(imposto);
+				
+			} else if (i == 30) {
+
+				prisaoVisitante.setTipo("visitante");
+				tab.add(prisaoVisitante);
+				
 			} else if (i == 5) {
 				Companhia companhia1 = new Companhia("Cia Ferroviaria", 200, 50);
 				tab.add(companhia1);
@@ -92,5 +107,4 @@ public class Tabuleiro {
 
 		return tab;
 	}
-
 }

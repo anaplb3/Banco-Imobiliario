@@ -8,6 +8,7 @@ import tabuleiro.Jogador;
 */
 public abstract class Posicao {
 	protected String nome;
+	protected Jogador proprietario;
 	
 	public void getNomeDaPosicao() {
 		System.out.println("Você está em "+this.nome);
@@ -17,6 +18,14 @@ public abstract class Posicao {
 	
 	public String getNome() {
 		return this.nome;
+	}
+	
+	public Jogador getProprietario() {
+		return this.proprietario;
+	}
+	
+	public void setProprietario(Jogador p) {
+		this.proprietario = p;
 	}
 	
 	public int getPreco() {
@@ -36,4 +45,6 @@ public abstract class Posicao {
 	public int getMultiplicador() {
 		return 0;
 	}
+	
+	public void pagandoAluguelOuMultiplicador(Jogador jogadorAtual, Posicao posicao, int dado1, int dado2) {}
 }
