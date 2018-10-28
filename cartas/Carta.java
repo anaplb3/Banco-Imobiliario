@@ -17,10 +17,6 @@ public class Carta {
 		this.valor = 0;
 		this.tipo = "";
 	}
-
-	public String tipo() {
-		return this.tipo;
-	}
 	
 	/**
 	 * Coloca as descrições das cartas de sorte ou revés dentro de um array
@@ -33,7 +29,7 @@ public class Carta {
 		descricoes.add("O dia do seu casamento chegou, receba os presente. Receba 50 de cada jogador");
 		descricoes.add("Reformou sua casa. Pague 50");
 		descricoes.add("Seu livro será publicado por uma grande editora. Receba 50");
-		descricoes.add("Utilize este cartão para se livrar da prosão");
+		descricoes.add("Utilize este cartão para se livrar da prisão");
 		descricoes.add("Vá para prisão");
 		descricoes.add("Vá até o início. Receba 200");
 		descricoes.add("Suas ações na bolsa de valores estão em alta. Receba 100");

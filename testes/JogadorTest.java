@@ -27,4 +27,9 @@ public class JogadorTest {
 		}
 	}
 
+	@Test
+	public void status() {
+		j1.status(p);
+	}
+
 }

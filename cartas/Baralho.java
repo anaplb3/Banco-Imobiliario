@@ -16,7 +16,7 @@ public class Baralho {
 	private Carta carta;
 
 	public Baralho() {
-		this.baralho = new Stack<Carta>();
+		this.baralho = new Stack<>();
 		this.carta = new Carta();
 	}
 
@@ -38,7 +38,9 @@ public class Baralho {
 			Carta cartaBaralho = new Carta();
 			if (i == 2) {
 				cartaBaralho.setTipo("recebaespecial");
-			} else if (i == 5) {
+			} else if(i == 5) {
+				cartaBaralho.setTipo("cartaliberdade");
+			} else if (i == 6) {
 				cartaBaralho.setTipo("prisao");
 			} else if (i == 7) {
 				cartaBaralho.setTipo("inicio");

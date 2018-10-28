@@ -2,6 +2,9 @@ package posicoes;
 
 import java.util.ArrayList;
 
+import command.PosicaoCommand;
+import jogo.Jogo;
+import properties.Manipulador;
 import tabuleiro.Jogador;
 
 /**
@@ -9,272 +12,204 @@ import tabuleiro.Jogador;
  * correspondentes
  */
 public class Propriedade extends Posicao {
-	private String nome;
-	private int preco;
-	private boolean status;
-	private int aluguel;
-	private String cor;
-	private Jogador proprietario;
+    private Manipulador mani;
+    private String cor;
+    private int valor1Casa;
+    private int valor2Casa;
+    private int valor3Casa;
+    private int valor4Casa;
+    private int valorHotel;
+    private int valorHipoteca;
+    private int valorCasa;
+    private int quantasCasasJaConstruidas;
 
-	public Propriedade() {
-		this.nome = "";
-		this.preco = 0;
-		this.aluguel = 0;
-		this.proprietario = null;
-	}
+    public Propriedade() {
+        this.nome = "";
+        this.preco = 0;
+        this.valorASerPago = 0;
+        this.proprietario = null;
+    }
 
-	public Propriedade(String nome, int preco, int aluguel) {
-		this.nome = nome;
-		this.preco = preco;
-		this.status = true;
-		this.aluguel = aluguel;
-	}
+    public Propriedade(String nome, int preco, int aluguel) {
+        this.nome = nome;
+        this.preco = preco;
+        this.compravel = true;
+        this.valorASerPago = aluguel;
+        this.quantasCasasJaConstruidas = 0;
+    }
 
-	public void getNomeDaPosicao() {
-		System.out.println("Você está em " + this.nome);
-	}
-	
-	public Jogador getProprietario() {
-		return this.proprietario;
-	}
+    public int getQuantasCasasJaConstruidas() {
+        return quantasCasasJaConstruidas;
+    }
 
-	public void setProprietario(Jogador j) {
-		this.proprietario = j;
-	}
+    public void setQuantasCasasJaConstruidas(int quantasCasasJaConstruidas) {
+        this.quantasCasasJaConstruidas = quantasCasasJaConstruidas;
+    }
 
-	public String getCor() {
-		return cor;
-	}
+    public int getValor1Casa() {
+        return valor1Casa;
+    }
 
-	public void setCor(String cor) {
-		this.cor = cor;
-	}
+    public void setValor1Casa(int valor1Casa) {
+        this.valor1Casa = valor1Casa;
+    }
 
-	public int getAluguel() {
-		return aluguel;
-	}
+    public int getValor2Casa() {
+        return valor2Casa;
+    }
 
-	public void setAluguel(int aluguel) {
-		this.aluguel = aluguel;
-	}
+    public void setValor2Casa(int valor2Casa) {
+        this.valor2Casa = valor2Casa;
+    }
 
-	public String getNome() {
-		return nome;
-	}
+    public int getValor3Casa() {
+        return valor3Casa;
+    }
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+    public void setValor3Casa(int valor3Casa) {
+        this.valor3Casa = valor3Casa;
+    }
 
-	public int getPreco() {
-		return preco;
-	}
+    public int getValor4Casa() {
+        return valor4Casa;
+    }
 
-	public void setPreco(int preco) {
-		this.preco = preco;
-	}
+    public void setValor4Casa(int valor4Casa) {
+        this.valor4Casa = valor4Casa;
+    }
 
-	public boolean isStatus() {
-		return status;
-	}
+    public int getValorHotel() {
+        return valorHotel;
+    }
 
-	public void setStatus(boolean status) {
-		this.status = status;
-	}
+    public void setValorHotel(int valorHotel) {
+        this.valorHotel = valorHotel;
+    }
 
-	/**
-	 * Esse método cria os objetos Propriedades
-	 * 
-	 * @return Retorna um array com as Propriedades do jogo
-	 * @see Propriedade
-	 */
-	public ArrayList<Propriedade> criandoPropriedades() {
-		ArrayList<String> nomes = nomesDasPropriedades();
-		ArrayList<Integer> precos = precoDasPropriedades();
-		ArrayList<Integer> aluguel = alugueis();
-		ArrayList<Propriedade> propriedades = new ArrayList<>();
+    public int getValorHipoteca() {
+        return valorHipoteca;
+    }
 
-		for (int i = 0; i < nomes.size(); i++) {
-			Propriedade p = new Propriedade();
+    public void setValorHipoteca(int valorHipoteca) {
+        this.valorHipoteca = valorHipoteca;
+    }
 
-			if (i == 0 || i == 1 || i == 2) {
-				p.setCor("rosa");
-			} else if (i == 3 || i == 4 || i == 5) {
-				p.setCor("azul");
-			} else if (i == 6 || i == 7 || i == 8) {
-				p.setCor("roxo");
-			} else if (i == 9 || i == 10) {
-				p.setCor("laranja");
-			} else if (i == 11 || i == 12) {
-				p.setCor("vermelho");
-			} else if (i == 13 || i == 14 || i == 15) {
-				p.setCor("amarelo");
-			} else if (i == 16 || i == 17 || i == 18 || i == 19) {
-				p.setCor("verde");
-			} else if (i == 20 || i == 21) {
-				p.setCor("azul escuro");
-			}
+    public int getValorCasa() {
+        return valorCasa;
+    }
 
-			p.setNome(nomes.get(i));
-			p.setPreco(precos.get(i));
-			p.setAluguel(aluguel.get(i));
-			p.setStatus(true);
-			propriedades.add(p);
-		}
+    public void setValorCasa(int valorCasa) {
+        this.valorCasa = valorCasa;
+    }
 
-		return propriedades;
+    public String getCor() {
+        return cor;
+    }
 
-	}
+    public void setCor(String cor) {
+        this.cor = cor;
+    }
 
-	/**
-	 * Esse método está adicionando os aluguéis as propriedades
-	 * 
-	 * @return Retorna um array com os alugueis das propriedades
-	 */
-	public ArrayList<Integer> alugueis() {
-		ArrayList<Integer> aluguel = new ArrayList<>();
+    /**
+     * Esse método cria os objetos Propriedades
+     *
+     * @return Retorna um array com as Propriedades do jogo
+     * @see Propriedade
+     */
+    public ArrayList<Propriedade> criandoPropriedades() {
+        mani = new Manipulador("properties/propriedades.properties");
 
-		aluguel.add(6);
-		aluguel.add(2);
-		aluguel.add(2);
-		aluguel.add(20);
-		aluguel.add(18);
-		aluguel.add(18);
-		aluguel.add(16);
-		aluguel.add(14);
-		aluguel.add(14);
-		aluguel.add(35);
-		aluguel.add(50);
-		aluguel.add(8);
-		aluguel.add(6);
-		aluguel.add(12);
-		aluguel.add(10);
-		aluguel.add(12);
-		aluguel.add(22);
-		aluguel.add(28);
-		aluguel.add(26);
-		aluguel.add(26);
-		aluguel.add(24);
-		aluguel.add(22);
+        int tamanho = 0;
+        try {
+            tamanho = Integer.parseInt(mani.getTamanho());
+        } catch (Exception e) {
+            e.getMessage();
+        }
 
-		return aluguel;
+        ArrayList<Propriedade> propriedades = new ArrayList<>();
 
-	}
+        for (int i = 0; i < tamanho; i++) {
+            Propriedade p = new Propriedade();
 
-	/**
-	 * Esse método está adicionando os nomes das propriedades a um array
-	 * 
-	 * @return Retorna um array com os nomes das propriedades
-	 */
-	public ArrayList<String> nomesDasPropriedades() {
-		ArrayList<String> nomes = new ArrayList<>();
+            try {
+                mani.setandoAtributos(i);
+            } catch (Exception e) {
+                e.getMessage();
+            }
 
-		nomes.add("Leblon");
-		nomes.add("Av. Presidente Vargas");
-		nomes.add("Av. Nossa Senhora De Copacabana");
 
-		nomes.add("Av. Brigadeiro Faria Lima");
-		nomes.add("Av. Rebouças");
-		nomes.add("Av. 9 de Julho");
+            if (i == 0 || i == 1 || i == 2) {
+                p.setCor("rosa");
+            } else if (i == 3 || i == 4 || i == 5) {
+                p.setCor("azul");
+            } else if (i == 6 || i == 7 || i == 8) {
+                p.setCor("roxo");
+            } else if (i == 9 || i == 10) {
+                p.setCor("laranja");
+            } else if (i == 11 || i == 12) {
+                p.setCor("vermelho");
+            } else if (i == 13 || i == 14 || i == 15) {
+                p.setCor("amarelo");
+            } else if (i == 16 || i == 17 || i == 18 || i == 19) {
+                p.setCor("verde");
+            } else if (i == 20 || i == 21) {
+                p.setCor("azul escuro");
+            }
 
-		nomes.add("Av. Europa");
-		nomes.add("Rua Augusta");
-		nomes.add("Av. Pacaembu");
+            p.setNome(mani.getNome());
+            p.setPreco(Integer.parseInt(mani.getPreco()));
+            p.setValorASerPago(Integer.parseInt(mani.getAluguel()));
+            p.setValor1Casa(mani.getValorCasa1());
+            p.setValor2Casa(mani.getValorCasa2());
+            p.setValor3Casa(mani.getValorCasa3());
+            p.setValor4Casa(mani.getValorCasa4());
+            p.setValorHipoteca(mani.getValorHipoteca());
+            p.setValorHotel(mani.getValorHotel());
+            p.setValorCasa(mani.getValorDaCasa());
+            p.setCompravel(true);
+            propriedades.add(p);
+        }
 
-		nomes.add("Interlagos");
-		nomes.add("Morumbi");
+        return propriedades;
 
-		nomes.add("Flamengo");
-		nomes.add("Botafogo");
+    }
 
-		nomes.add("Av. Brasil");
-		nomes.add("Av. Paulista");
-		nomes.add("Jardim Europa");
 
-		nomes.add("Copacabana");
-		nomes.add("Av. Vieira Souto");
-		nomes.add("Av. Atlântica");
-		nomes.add("Ipanema");
+    /**
+     * Este método retira o valor do aluguel do saldo do jogador e paga ao dono da propriedade
+     *
+     * @param jogadorAtual Jogador da rodada
+     * @see Jogador
+     */
+    public void pagandoAluguel(Jogador jogadorAtual) {
 
-		nomes.add("Jardim Paulista");
-		nomes.add("Brooklin");
+        Jogador dono = this.getProprietario();
+        System.out.println(dono.getNome());
+        if (dono.equals(jogadorAtual)) {
 
-		return nomes;
-	}
+            System.out.println("Esse domínio já é seu.");
 
-	/**
-	 * Esse método está adiconando os preços das propriedades a um array
-	 * 
-	 * @return Retorna um array com os preços das propriedades
-	 */
-	public ArrayList<Integer> precoDasPropriedades() {
-		ArrayList<Integer> precos = new ArrayList<>();
+        } else {
+            dono.setDinheiro(dono.getDinheiro() + this.getValorASerPago());
 
-		precos.add(100);
-		precos.add(60);
-		precos.add(60);
+            jogadorAtual.setDinheiro(jogadorAtual.getDinheiro() - this.getValorASerPago());
+            System.out.println("Pagou R$" + this.getValorASerPago() + " de aluguel a " + dono.getNome() + ". Dinheiro do jogador: "
+                    + jogadorAtual.getDinheiro() + "\n");
+        }
 
-		precos.add(240);
+    }
 
-		precos.add(220);
-		precos.add(220);
-		precos.add(200);
-		precos.add(180);
-		precos.add(180);
-
-		precos.add(350);
-		precos.add(400);
-		precos.add(120);
-		precos.add(100);
-
-		precos.add(160);
-		precos.add(140);
-		precos.add(140);
-		precos.add(260);
-
-		precos.add(320);
-		precos.add(300);
-
-		precos.add(300);
-		precos.add(280);
-		precos.add(260);
-
-		return precos;
-	}
-	
-	
-	
-	/**
-	 * Este método retira o valor do aluguel do saldo do jogador e paga ao dono da propriedade
-	 * 
-	 * @param jogadorAtual
-	 *            Jogador da rodada
-	 * @param posicao
-	 *            Propriedade que ele se encontra
-	 * @param dado1
-	 *            Resultado do primeiro dado
-	 * @param dado2
-	 *            Resultado do segundo dado
-	 * @see Jogador
-	 * @see Posicao
-	 */
-	public void pagandoAluguelOuMultiplicador(Jogador jogadorAtual, Posicao posicao, int dado1, int dado2) {
-		
-		Jogador dono = posicao.getProprietario();
-		if(dono.equals(jogadorAtual)) {
-			
-			System.out.println("Esse domínio já é seu.");
-			
-		} else {
-			dono.setDinheiro(dono.getDinheiro() + posicao.getAluguel());
-		
-			jogadorAtual.setDinheiro(jogadorAtual.getDinheiro() - posicao.getAluguel());
-			System.out.println("Pagou R$" + posicao.getAluguel() + " de aluguel a "+dono.getNome()+". Dinheiro do jogador: "
-				+ jogadorAtual.getDinheiro() + "\n");
-		}
-		
-		
-		
-	}
+    /**
+     * encapsula a chamada do método de pagamento de aluguel
+     * @param j jogador da vez
+     * @param dado1 resultado do dado 1
+     * @param dado2 resultado do dado 2
+     * @param jogo  classe do Jogo
+     */
+    @Override
+    public void execute(Jogador j, int dado1, int dado2, Jogo jogo) {
+        getNomeDaPosicao();
+        pagandoAluguel(j);
+    }
 
 }

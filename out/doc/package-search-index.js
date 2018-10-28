@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"cartas"},{"l":"jogo"},{"l":"posicoes"},{"l":"properties"},{"l":"tabuleiro"},{"l":"testes"}]

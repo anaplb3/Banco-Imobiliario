@@ -49,8 +49,8 @@ public class SorteOuRevesTest {
 	}
 
 	@Test
-	public void testPrisao() {
-		sorte.prisao(j1);
+	public void testvaParaPrisao() {
+		sorte.vaParaPrisao(j1);
 		assertTrue(j1.isPrisioneiro());
 	}
 

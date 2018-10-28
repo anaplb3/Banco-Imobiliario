@@ -1,122 +1,117 @@
 package posicoes;
 
+import jogo.Jogo;
+import properties.Manipulador;
 import tabuleiro.Jogador;
+
+import java.util.ArrayList;
 
 /**
  * Esta classe tem os atributos da posição Companhia
  */
 public class Companhia extends Posicao{
-	private String nome;
-	private int preco;
-	private boolean status;
-	private int multiplicador;
-	private Jogador proprietario;
-	
-	/**
-	 * Construtor iniciando atributos vazios
-	 */
-	public Companhia() {
-		this.nome = "";
-		this.preco = 0;
-		this.status = true;
-	}
-	
-	/**
-	 * Construtor iniciando atributos com valores
-	 * @param nome Nome da compnhia
-	 * @param preco Preço da companhia
-	 * @param multiplicador Multiplicador de valor da companhia
-	 */
-	public Companhia(String nome, int preco, int multiplicador) {
-		this.nome = nome;
-		this.preco = preco;
-		this.status = true;
-		this.multiplicador = multiplicador;
-		this.proprietario = null;
-	}
-	
-	public Jogador getProprietario() {
-		return this.proprietario;
-	}
+    private Manipulador mani;
 
-	public void setProprietario(Jogador j) {
-		this.proprietario = j;
-	}
-	
-	public boolean isStatus() {
-		return status;
-	}
+    /**
+     * Construtor iniciando atributos vazios
+     */
+    public Companhia() {
+        this.nome = "";
+        this.preco = 0;
+        this.compravel = true;
+    }
 
-	public void setStatus(boolean status) {
-		this.status = status;
-	}
-	
-	public int getMultiplicador() {
-		return multiplicador;
-	}
+    /**
+     * Construtor iniciando atributos com valores
+     *
+     * @param nome          Nome da companhia
+     * @param preco         Preço da companhia
+     * @param valor Multiplicador de valor da companhia
+     */
+    public Companhia(String nome, int preco, int valor) {
+        this.nome = nome;
+        this.preco = preco;
+        this.compravel = true;
+        this.valorASerPago = valor;
+        this.proprietario = null;
+    }
 
-	public void setMultiplicador(int multiplicador) {
-		this.multiplicador = multiplicador;
-	}
 
-	/**
-	 * Esse método printa o nome da Companhia
-	 */
-	public void getNomeDaPosicao() {
-		System.out.println("Você está em "+this.nome);
-	}
-	
-	public String getNome() {
-		return nome;
-	}
-	
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-	
-	public int getPreco() {
-		return preco;
-	}
-	
-	public void setPreco(int preco) {
-		this.preco = preco;
-	}
-	
-	
-	/**
-	 * Este método retira o valor do multiplicador do saldo do jogador e paga ao dono da companhia
-	 * 
-	 * @param jogadorAtual
-	 *            Jogador da rodada
-	 * @param posicao
-	 *            Companhia que ele se encontra
-	 * @param dado1
-	 *            Resultado do primeiro dado
-	 * @param dado2
-	 *            Resultado do segundo dado            
-	 * @see Jogador
-	 * @see Posicao
-	 */
-	public void pagandoAluguelOuMultiplicador(Jogador jogadorAtual, Posicao posicao, int dado1, int dado2) {
-		
-		int multiplicadorASePagar = (dado1 + dado2) * posicao.getMultiplicador();
-		
-		Jogador dono = posicao.getProprietario();
-		if(dono.equals(jogadorAtual)) {
-			
-			System.out.println("Esse dominío já é seu!");
-			
-		} else {
-			dono.setDinheiro(dono.getDinheiro() + multiplicadorASePagar);
+    /**
+     * Lê o arquivo .properties e seta as informações nos atributos do objeto
+     *
+     * @return um array com todas as companhias
+     * @see Manipulador
+     */
+    public ArrayList<Companhia> criandoCompanhias() {
+        ArrayList<Companhia> companhias = new ArrayList<>();
+        mani = new Manipulador("properties/companhias.properties");
 
-			jogadorAtual.setDinheiro(jogadorAtual.getDinheiro() - multiplicadorASePagar);
-			System.out.println("Pagou R$" + multiplicadorASePagar + " de multiplicador a "+dono.getNome()+". Dinheiro do jogador: "
-				+ jogadorAtual.getDinheiro() + "\n");
-		}
-		
-		
-		
-	}
-	
-	
+        int tamanho = 0;
+        try {
+            tamanho = Integer.parseInt(mani.getTamanho());
+        } catch (Exception e) {
+            e.getMessage();
+        }
+
+        for (int i = 0; i < tamanho; i++) {
+            try {
+                mani.setandoAtributos(i);
+            } catch (Exception e) {
+                e.getMessage();
+            }
+
+            String nome = mani.getNome();
+            int preco = Integer.parseInt(mani.getPreco());
+            int multiplicador = Integer.parseInt(mani.getAluguel());
+
+            Companhia c = new Companhia(nome, preco, multiplicador);
+
+            companhias.add(c);
+        }
+
+        return companhias;
+    }
+
+    /**
+     * Este método retira o valor do multiplicador do saldo do jogador e paga ao dono da companhia
+     *
+     * @param jogadorAtual Jogador da rodada
+     * @param dado1        Resultado do primeiro dado
+     * @param dado2        Resultado do segundo dado
+     * @see Jogador
+     * @see Posicao
+     */
+    public void pagandoMultiplicador(Jogador jogadorAtual, int dado1, int dado2) {
+
+        int multiplicadorASePagar = (dado1 + dado2) * this.getValorASerPago();
+
+        Jogador dono = this.getProprietario();
+        if (dono.equals(jogadorAtual)) {
+
+            System.out.println("Esse dominío já é seu!");
+
+        } else {
+            dono.setDinheiro(dono.getDinheiro() + multiplicadorASePagar);
+
+            jogadorAtual.setDinheiro(jogadorAtual.getDinheiro() - multiplicadorASePagar);
+            System.out.println("Pagou R$" + multiplicadorASePagar + " de multiplicador a " + dono.getNome() + ". Dinheiro do jogador: "
+                    + jogadorAtual.getDinheiro() + "\n");
+        }
+
+
+    }
+
+    /**
+     * método que faz a chamada do método de pagar o multiplicador
+     * @param j jogador da vez
+     * @param dado1 resultado do dado 1
+     * @param dado2 resultado do dado 2
+     * @param jogo  classe do Jogo
+     */
+    @Override
+    public void execute(Jogador j, int dado1, int dado2, Jogo jogo) {
+        System.out.println("Você está em "+this.nome);
+        pagandoMultiplicador(j, dado1, dado2);
+    }
 }

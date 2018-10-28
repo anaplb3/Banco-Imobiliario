@@ -15,6 +15,7 @@ import tabuleiro.Tabuleiro;
 
 public class JogoTest {
 	Jogo jogo;
+	Tabuleiro tab;
 	ArrayList<Posicao> tabuleiro;
 	ArrayList<Jogador> jogadores;
 	Jogador j1, j2;
@@ -23,7 +24,7 @@ public class JogoTest {
 
 	@Before
 	public void setUp() throws Exception {
-		Tabuleiro tab = new Tabuleiro();
+		tab = tab.getInstance();
 		tabuleiro = tab.criandoTab();
 		
 		jogo = new Jogo();
@@ -48,13 +49,25 @@ public class JogoTest {
 	public void testPegandoPosicaoNoTabuleiro() {
 		j1.setPosicao(40);
 		
-		Posicao p = jogo.pegandoPosicaoNoTabuleiro(0, 1, tabuleiro, j1);
+		Posicao p = jogo.pegandoPosicaoNoTabuleiro(0, 1,  j1);
 		assertEquals("Leblon", p.getNome());
 		assertEquals(400, j1.getDinheiro(), 0);
 		
 		j1.setPosicao(0);
-		p = jogo.pegandoPosicaoNoTabuleiro(0, 1, tabuleiro, j1);
+		p = jogo.pegandoPosicaoNoTabuleiro(0, 1, j1);
 		assertEquals("Leblon", p.getNome());
+	}
+
+	@Test
+	public void checandoGanhador() {
+		j2.setDinheiro(0);
+		assertNotNull(jogo.checandoGanhador());
+	}
+
+	@Test
+	public void fazendoJogada() {
+		j2.setDinheiro(0);
+		jogo.fazendoJogada();
 	}
 
 

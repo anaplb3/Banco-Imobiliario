@@ -2,109 +2,100 @@ package tabuleiro;
 
 import java.util.ArrayList;
 
-import posicoes.Companhia;
-import posicoes.Imposto;
-import posicoes.Lucros;
-import posicoes.ParadaLivre;
-import posicoes.Posicao;
-import posicoes.Prisao;
-import posicoes.Propriedade;
-import posicoes.SorteOuReves;
+import posicoes.*;
 
 /**
  * Esta classe é responsável por criar o tabuleiro
  */
 public class Tabuleiro {
-	private Propriedade prop;
+    private static Tabuleiro tab;
+    private Propriedade prop;
+    private Companhia comp;
 
-	/**
-	 * Esse construtor inicia um objeto Propriedade para usar o método
-	 * criandoPropriedades
-	 * 
-	 * @see Propriedade
-	 */
-	public Tabuleiro() {
-		this.prop = new Propriedade();
-	}
+    /**
+     * Esse construtor inicia um objeto Propriedade  e Companhia para usar seus métodos
+     * de criação de objetos
+     *
+     * @see Propriedade
+     * @see Companhia
+     */
+    private Tabuleiro() {
+        this.prop = new Propriedade();
+        this.comp = new Companhia();
+    }
 
-	/**
-	 * Esse método adiciona os objetos componentes do tabuleiro no tabuleiro
-	 * 
-	 * @return Retorna um array com todas as posições dentro da lista, formando
-	 *         assim o tabuleiro
-	 */
+    /**
+     * instancia de forma estática um objeto Tabuleiro
+     * @return uma instância do objeto Tabuleiro
+     */
+    public static Tabuleiro getInstance() {
+        if (tab == null) {
+            tab = new Tabuleiro();
+        }
 
-	public ArrayList<Posicao> criandoTab() {
-		ArrayList<Posicao> tab = new ArrayList<>();
-		ArrayList<Propriedade> propriedades = prop.criandoPropriedades();
-		Prisao prisao = new Prisao();
-		Prisao prisaoVisitante = new Prisao();
-		SorteOuReves sorte = new SorteOuReves();
-		Lucros lucros = new Lucros();
-		Imposto imposto = new Imposto();
-		ParadaLivre parada = new ParadaLivre();
+        return tab;
+    }
 
-		int contador = 0;
-		for (int i = 0; i < 40; i++) {
+    /**
+     * Esse método adiciona os objetos componentes do tabuleiro no tabuleiro
+     *
+     * @return Retorna um array com todas as posições dentro da lista, formando
+     * assim o tabuleiro
+     */
 
-			if (i == 2 || i == 12 || i == 16 || i == 22 || i == 27 || i == 37) {
-				tab.add(sorte);
-			} else if (i == 10) {
-				
-				prisao.setTipo("prisão");
-				tab.add(prisao);
-				
-			} else if (i == 18) {
-				
-				tab.add(lucros);
-				
-			} else if (i == 24) {
-				
-				tab.add(imposto);
-				
-			} else if (i == 30) {
+    public ArrayList<Posicao> criandoTab() {
+        ArrayList<Posicao> tab = new ArrayList<>();
+        ArrayList<Propriedade> propriedades = prop.criandoPropriedades();
+        ArrayList<Companhia> companhias = comp.criandoCompanhias();
 
-				prisaoVisitante.setTipo("visitante");
-				tab.add(prisaoVisitante);
-				
-			} else if (i == 5) {
-				Companhia companhia1 = new Companhia("Cia Ferroviaria", 200, 50);
-				tab.add(companhia1);
+        Prisao prisao = new Prisao();
+        PosicaoInicial posicaoInicial = new PosicaoInicial();
+        PrisaoVisitante prisaoVisitante = new PrisaoVisitante();
+        SorteOuReves sorte = new SorteOuReves();
+        Lucros lucros = new Lucros();
+        Imposto imposto = new Imposto();
+        ParadaLivre parada = new ParadaLivre();
 
-			} else if (i == 7) {
+        int contadorPropriedade = 0;
+        int contadorCompanhia = 0;
+        for (int i = 0; i < 40; i++) {
 
-				Companhia companhia2 = new Companhia("Cia de Viação", 200, 50);
-				tab.add(companhia2);
+            if (i == 2 || i == 12 || i == 16 || i == 22 || i == 27 || i == 37) {
+                tab.add(sorte);
+            } else if (i == 10) {
 
-			} else if (i == 15) {
-				Companhia companhia3 = new Companhia("Cia de Taxi", 150, 40);
-				tab.add(companhia3);
+                tab.add(prisao);
 
-			} else if (i == 25) {
-				Companhia companhia4 = new Companhia("Cia de Navegação", 150, 40);
-				tab.add(companhia4);
+            } else if (i == 18) {
 
-			} else if (i == 32) {
-				Companhia companhia5 = new Companhia("Cia de Aviação", 200, 50);
-				tab.add(companhia5);
+                tab.add(lucros);
 
-			} else if (i == 35) {
-				Companhia companhia6 = new Companhia("Cia de Taxi Aereo", 200, 50);
-				tab.add(companhia6);
-			}
+            } else if (i == 24) {
 
-			else if (i == 0) {
-				tab.add(null);
+                tab.add(imposto);
 
-			} else if (i == 20) {
-				tab.add(parada);
-			} else {
-				tab.add(propriedades.get(contador));
-				contador += 1;
-			}
+            } else if (i == 30) {
 
-		}
+                tab.add(prisaoVisitante);
 
-		return tab;
-	}
+            } else if (i == 5 || i == 7 || i == 15 || i == 25 || i == 32 || i == 35) {
+                tab.add(companhias.get(contadorCompanhia));
+                contadorCompanhia += 1;
+
+
+            } else if (i == 0) {
+                tab.add(posicaoInicial);
+
+            } else if (i == 20) {
+                tab.add(parada);
+            } else {
+                tab.add(propriedades.get(contadorPropriedade));
+                contadorPropriedade += 1;
+            }
+
+        }
+
+        return tab;
+    }
+
 }

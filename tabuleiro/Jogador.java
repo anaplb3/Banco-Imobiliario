@@ -10,171 +10,155 @@ import posicoes.Propriedade;
  * Esta classe tem os atributos de cada jogador
  */
 public class Jogador {
-	private String nome;
-	private String cor;
-	private int posicao;
-	private double dinheiro;
-	ArrayList<Posicao> propriedades;
-	private boolean prisioneiro;
-	private boolean prisioneiroVisitante;
-	private int dadosIguais;
-	private boolean cartaoLiberdade;
-	
+    private String nome;
+    private String cor;
+    private int posicao;
+    private double dinheiro;
+    private ArrayList<Posicao> propriedades;
+    private boolean prisioneiro;
+    private boolean prisioneiroVisitante;
+    private int dadosIguais;
+    private boolean cartaoLiberdade;
 
-	/**
-	 * Esse construtor está setando as informações do jogador
-	 * 
-	 * @param nome
-	 *            Nome do jogador
-	 * @param cor
-	 *            Cor do jogador
-	 */
-	public Jogador(String nome, String cor) {
-		this.nome = nome;
-		this.cor = cor;
-		this.posicao = 0;
-		this.dinheiro = 1500;
-		this.propriedades = new ArrayList<>();
-		this.prisioneiroVisitante = false;
-	}
 
-	/**
-	 * Esse método está adicionando o dominío no Array de propriedades do jogador
-	 * 
-	 * @param p
-	 *            É a posição (Propriedade ou Companhia) em que o jogador se
-	 *            encontra
-	 */
-	public void adicionandoPropriedade(Posicao p) {
-		this.propriedades.add(p);
-		p.setProprietario(this);
-	}
-	
-	public boolean isPrisioneiroVisitante() {
-		return prisioneiroVisitante;
-	}
+    /**
+     * Esse construtor está setando as informações do jogador
+     *
+     * @param nome Nome do jogador
+     * @param cor  Cor do jogador
+     */
+    public Jogador(String nome, String cor) {
+        this.nome = nome;
+        this.cor = cor;
+        this.posicao = 0;
+        this.dinheiro = 1500;
+        this.propriedades = new ArrayList<>();
+        this.prisioneiroVisitante = false;
+    }
 
-	public void setPrisioneiroVisitante(boolean prisioneiroVisitante) {
-		this.prisioneiroVisitante = prisioneiroVisitante;
-	}
+    /**
+     * Esse método está adicionando o dominío no Array de propriedades do jogador
+     *
+     * @param p É a posição (Propriedade ou Companhia) que o jogador adquiriu
+     */
+    public void adicionandoPropriedade(Posicao p) {
+        this.propriedades.add(p);
+        p.setProprietario(this);
+    }
 
-	public boolean isCartaoLiberdade() {
-		return cartaoLiberdade;
-	}
+    public boolean isPrisioneiroVisitante() {
+        return prisioneiroVisitante;
+    }
 
-	public void setCartaoLiberdade(boolean cartaoLiberdade) {
-		this.cartaoLiberdade = cartaoLiberdade;
-	}
-	
-	public boolean isPrisioneiro() {
-		return prisioneiro;
-	}
+    public void setPrisioneiroVisitante(boolean prisioneiroVisitante) {
+        this.prisioneiroVisitante = prisioneiroVisitante;
+    }
 
-	public void setPrisioneiro(boolean prisioneiro) {
-		this.prisioneiro = prisioneiro;
-	}
+    public boolean isCartaoLiberdade() {
+        return cartaoLiberdade;
+    }
 
-	public int getDadosIguais() {
-		return dadosIguais;
-	}
+    public void setCartaoLiberdade(boolean cartaoLiberdade) {
+        this.cartaoLiberdade = cartaoLiberdade;
+    }
 
-	public void setDadosIguais(int dadosIguais) {
-		this.dadosIguais = dadosIguais;
-	}
+    public boolean isPrisioneiro() {
+        return prisioneiro;
+    }
 
-	public ArrayList<Posicao> getPropriedades() {
-		return propriedades;
-	}
+    public void setPrisioneiro(boolean prisioneiro) {
+        this.prisioneiro = prisioneiro;
+    }
 
-	public void setPropriedades(ArrayList<Posicao> propriedades) {
-		this.propriedades = propriedades;
-	}
+    public int getDadosIguais() {
+        return dadosIguais;
+    }
 
-	public void setDinheiro(double money) {
-		this.dinheiro = money;
-	}
+    public void setDadosIguais(int dadosIguais) {
+        this.dadosIguais = dadosIguais;
+    }
 
-	public double getDinheiro() {
-		return this.dinheiro;
-	}
+    public ArrayList<Posicao> getPropriedades() {
+        return propriedades;
+    }
 
-	public int getPosicao() {
-		return this.posicao;
-	}
+    public void setPropriedades(ArrayList<Posicao> propriedades) {
+        this.propriedades = propriedades;
+    }
 
-	public void setPosicao(int p) {
-		this.posicao = p;
-	}
+    public void setDinheiro(double money) {
+        this.dinheiro = money;
+    }
 
-	public String getNome() {
-		return nome;
-	}
+    public double getDinheiro() {
+        return this.dinheiro;
+    }
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+    public int getPosicao() {
+        return this.posicao;
+    }
 
-	public String getCor() {
-		return cor;
-	}
+    public void setPosicao(int p) {
+        this.posicao = p;
+    }
 
-	public void setCor(String cor) {
-		this.cor = cor;
-	}
+    public String getNome() {
+        return nome;
+    }
 
-	/**
-	 * Esse método mostra os atributos do jogador
-	 * 
-	 * @param tabuleiro
-	 *            É um Array com todas as posições disponíveis no tabuleiro
-	 */
-	public void status(ArrayList<Posicao> tabuleiro) {
-		Posicao lugar = tabuleiro.get(this.posicao);
-		
-		System.out.println(this.nome + " - " + this.cor);
-		if (lugar == null) {
-			
-			System.out.println("Você está " + this.posicao + ", no ponto de partida.");
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
-		} else {
-			
-			System.out.println("Você está na casa " + this.posicao + ", em " + lugar.getNome());
+    public String getCor() {
+        return cor;
+    }
 
-		}
-		System.out.println("Você possui R$" + this.dinheiro);
-		
-		
-		if (this.propriedades.size() > 0) {
-			System.out.println("Essas são suas propriedades: ");
-			for (Posicao prop : this.propriedades) {
-				if (prop instanceof Propriedade) {
-					Propriedade p = (Propriedade) prop;
-					System.out.println(p.getNome() + ", da cor " + p.getCor() + " com aluguel de R$" + p.getAluguel());
-				} else {
-					Companhia c = (Companhia) prop;
-					System.out.println(c.getNome() + ", com multiplicador de " + c.getMultiplicador());
-				}
+    /**
+     * Esse método mostra os atributos do jogador
+     *
+     * @param lugar posição que o jogador se encontra atualmente
+     */
+    public void status(Posicao lugar) {
 
-			}
-			System.out.println("\n");
+        System.out.println(this.nome + " - " + this.cor);
 
-		} else {
-			System.out.println("Você ainda não tem propriedades!\n");
-		}
+        System.out.println("Você está na casa " + this.posicao + ", em " + lugar.getNome());
 
-	}
-	
-	/**
-	 * Deixa os domínios do jogador disponível novamente
-	 */
-	public void saindo() {
-		
-		for(Posicao p: this.propriedades) {
-			
-			p.setStatus(false);
-			
-		}
-		
-	}
+        System.out.println("Você possui R$" + this.dinheiro);
+
+
+        if (this.propriedades.size() > 0) {
+            System.out.println("Essas são suas propriedades: ");
+            for (Posicao prop : this.propriedades) {
+                if (prop instanceof Propriedade) {
+                    Propriedade p = (Propriedade) prop;
+                    System.out.println(p.getNome() + ", da cor " + p.getCor() + " com aluguel de R$" + p.getValorASerPago());
+                } else {
+                    Companhia c = (Companhia) prop;
+                    System.out.println(c.getNome() + ", com multiplicador de " + c.getValorASerPago());
+                }
+
+            }
+            System.out.println("\n");
+
+        } else {
+            System.out.println("Você ainda não tem propriedades!\n");
+        }
+
+    }
+
+    /**
+     * Deixa os domínios do jogador disponível novamente
+     */
+    public void saindo() {
+
+        for (Posicao p : this.propriedades) {
+
+            p.setCompravel(false);
+
+        }
+
+    }
 
 }
